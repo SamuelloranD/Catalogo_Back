@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidratantes</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="imagens/logo.png" type="image/x-icon">
+
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="imagens/logo.png" alt="Logo" class="logo">
+            <span class="text">RH Kosmetic</span>
+        </div>
+        
+        <nav>
+            <ul>
+                <li>
+                    <a href="index.html">Menu Principal</a>
+                </li>
+            </ul>    
+        </nav>
+    </header>
+    
+    <h1 style="margin-top: 120px; text-align: center; font-size: 1.8rem; color: #2c3e50;">Cadastre-se</h1>
+
+    <form id="form-cadastro" action="http://localhost:8080/enviar" method="POST">
+        <label for="usuario">Usuário:</label>
+        <input type="text" id="usuario" name="username" required>
+
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" required>
+
+        <label for="csenha">Confirmar Senha:</label>
+        <input type="password" id="csenha" name="csenha" required>
+
+        <button type="submit">Criar conta</button>
+    </form>
+
+    <p id="mensagem" style="text-align: center"></p>
+    <script src="script/cadastro.js"></script>
+
+</body>
+</html>

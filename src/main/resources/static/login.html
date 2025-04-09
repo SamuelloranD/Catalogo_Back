@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RH Kosmetics</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="imagens/logo.png" type="image/x-icon">
+
+</head>
+<body>
+    
+    <header>
+        <div class="logo-container">
+            <img src="imagens/logo.png" alt="Logo" class="logo">
+            <span class="text">RH Kosmetic</span>
+        </div>
+        
+        <nav>
+            <ul>
+                <li>
+                    <a href="index.html">Menu Principal</a>
+                </li>
+            </ul>    
+        </nav>
+    </header>
+    
+    <h1 style="margin-top: 120px; text-align: center; font-size: 1.8rem; color: #2c3e50;">Login</h1>
+    
+    <form action="http://localhost:8080/login" method="POST">
+        <label for="usuario">Usuário:</label>
+        <input type="text" id="usuario" name="usuario" required>
+    
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" required>
+    
+        <button type="submit">Entrar</button>
+        <br><br>
+        
+        <div style="text-align: center;">
+            <h2 style="font-size: 1.1rem;">Ainda não tem cadastro?</h2>
+            <a href="cadastro.html" class="btn">Cadastre-se</a>
+        </div>
+    </form>
+
+    <div id="erro" style="color: red; text-align: center; margin-top: 10px;"></div>
+
+    <script src="script/login.js"></script>
+
+</body>
