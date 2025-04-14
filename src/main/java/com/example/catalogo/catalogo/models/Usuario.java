@@ -18,6 +18,8 @@ public class Usuario {
     private String senha;
     private String email;
 
+    private String role;
+
     // Não persiste o campo csenha no banco de dados, é usado apenas para validação
     /*@Transient
     private String csenha;*/

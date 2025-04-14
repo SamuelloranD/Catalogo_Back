@@ -2,6 +2,7 @@ function atualizarPreco(idPreco, preco) {
     document.getElementById(idPreco).innerText = `R$ ${parseFloat(preco).toFixed(2).replace('.', ',')}`;
 }
 
+// Ordenação de produtos por nome
 const produtoContainer = document.getElementById('produtos');
 const produtos = Array.from(produtoContainer.children);
 
@@ -13,29 +14,55 @@ produtos.sort((a, b) => {
 
 produtos.forEach(produto => produtoContainer.appendChild(produto));
 
+// Exibição de produtos com "Ver Mais"
 const produtosContainer = document.getElementById('produtos');
 const produto = Array.from(produtosContainer.getElementsByClassName('produto'));
 const btnVerMais = document.getElementById('ver-mais');
 let produtosMostrados = 15;
 
-// Função para mostrar os produtos iniciais
 function mostrarProdutos() {
-    produtos.slice(0, produtosMostrados).forEach(produto => {
+    produto.slice(0, produtosMostrados).forEach(produto => {
         produto.style.display = 'block';
     });
 }
 
-// Inicialmente, esconda todos os produtos e mostre apenas os dois primeiros
-produtos.forEach(produto => produto.style.display = 'none');
+// Inicialmente, esconda todos os produtos e mostre apenas os iniciais
+produto.forEach(produto => produto.style.display = 'none');
 mostrarProdutos();
 
-// Clique no botão "Ver Mais" para exibir mais produtos
 btnVerMais.addEventListener('click', () => {
     produtosMostrados += 15;
     mostrarProdutos();
 
-    // Se todos os produtos estiverem visíveis, esconda o botão
-    if (produtosMostrados >= produtos.length) {
+    if (produtosMostrados >= produto.length) {
         btnVerMais.style.display = 'none';
+    }
+});
+
+// -------------------- ADMIN CONTROLE --------------------
+
+// Função para pegar parâmetros da URL
+function getParametroUrl(nome) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(nome);
+}
+
+// Detecta admin na URL e salva no localStorage
+document.addEventListener('DOMContentLoaded', function() {
+    const adminParam = getParametroUrl('admin');
+    if (adminParam) {
+        localStorage.setItem('admin', adminParam);
+    }
+
+    const isAdmin = localStorage.getItem('admin') === 'true';
+
+    if (isAdmin) {
+        const nav = document.querySelector('nav ul');
+        const adminItem = document.createElement('li');
+        const adminLink = document.createElement('a');
+        adminLink.href = 'admin.html';
+        adminLink.textContent = 'Painel Admin';
+        adminItem.appendChild(adminLink);
+        nav.appendChild(adminItem);
     }
 });

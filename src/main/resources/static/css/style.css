@@ -6,6 +6,7 @@
     scroll-behavior: smooth; /* Suaviza a rolagem para as seções */
 }
 
+
 body, html {
     width: 100%;
     height: 100%;
@@ -387,10 +388,6 @@ form button:active {
 
 #ver-mais:active {
     transform: scale(0.95);
-}
-
-#form-cadastro {
-    display: inline-block; /* Garante que o form fique compacto */
 }
 
 #mensagem {

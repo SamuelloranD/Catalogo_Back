@@ -45,6 +45,29 @@
 
     <div id="erro" style="color: red; text-align: center; margin-top: 10px;"></div>
 
+    <script>
+        // Verificar se é admin ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAdminStatus();
+        });
+
+        function checkAdminStatus() {
+            fetch('/api/check-admin')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.isAdmin) {
+                        document.getElementById('admin-panel-link').style.display = 'block';
+                        document.getElementById('logout-link').style.display = 'block';
+                        document.getElementById('login-link').style.display = 'none';
+                    } else {
+                        document.getElementById('admin-panel-link').style.display = 'none';
+                        document.getElementById('logout-link').style.display = 'none';
+                        document.getElementById('login-link').style.display = 'block';
+                    }
+                });
+        }
+    </script>
+
     <script src="script/login.js"></script>
 
 </body>

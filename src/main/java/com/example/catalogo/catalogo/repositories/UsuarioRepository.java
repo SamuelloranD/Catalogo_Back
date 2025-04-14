@@ -1,5 +1,4 @@
 package com.example.catalogo.catalogo.repositories;
-
 import com.example.catalogo.catalogo.models.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 

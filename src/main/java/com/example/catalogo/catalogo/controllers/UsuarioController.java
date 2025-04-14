@@ -2,17 +2,19 @@ package com.example.catalogo.catalogo.controllers;
 
 import com.example.catalogo.catalogo.models.Usuario;
 import com.example.catalogo.catalogo.services.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @RestController
 public class UsuarioController {
@@ -29,10 +31,11 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body("As senhas não coincidem.\nTente novamente!");
         }
 
-        usuarioService.criarUsuario(usuario);
+        usuario.setRole("USER");
+
+        usuarioService.cadastrarUsuario(usuario);
         return ResponseEntity.ok("Usuário cadastrado com sucesso!\nVocê será redirecionado em 5 segundos.");
     }
-
 
     @PostMapping("/login")
     public void login(@RequestParam("usuario") String usuario,
@@ -42,7 +45,11 @@ public class UsuarioController {
         Usuario usuarioEncontrado = usuarioService.buscarPorUsuario(usuario);
 
         if (usuarioEncontrado != null && usuarioEncontrado.getSenha().equals(senha)) {
-            response.sendRedirect("/index.html");
+            if ("ADMIN".equals(usuarioEncontrado.getRole())) {
+                response.sendRedirect("/index.html?admin=true");
+            } else {
+                response.sendRedirect("/index.html?admin=false");
+            }
         } else {
             response.sendRedirect("/login.html?erro=true");
         }
@@ -53,5 +60,25 @@ public class UsuarioController {
     public List<Usuario> listarTodosUsuarios(){
         return usuarioService.listarTodosUsuarios();
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.getSession().invalidate();
+        return "redirect:/login?logout";
+    }
+
+    @GetMapping("/api/check-admin")
+    @ResponseBody
+    public Map<String, Boolean> checkAdminStatus(HttpServletRequest request) {
+        Map<String, Boolean> response = new HashMap<>();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = auth.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+
+        response.put("isAdmin", isAdmin);
+        return response;
+    }
+
 
 }

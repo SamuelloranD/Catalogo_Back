@@ -16,7 +16,7 @@ public class UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    public void criarUsuario(Usuario usuario) {
+    public void cadastrarUsuario(Usuario usuario) {
         usuarioRepository.save(usuario); // Salvar no banco de dados
     }
 
