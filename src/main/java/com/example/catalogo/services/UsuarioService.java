@@ -1,7 +1,7 @@
-package com.example.catalogo.catalogo.services;
+package com.example.catalogo.services;
 
-import com.example.catalogo.catalogo.models.Usuario;
-import com.example.catalogo.catalogo.repositories.UsuarioRepository;
+import com.example.catalogo.models.Usuario;
+import com.example.catalogo.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

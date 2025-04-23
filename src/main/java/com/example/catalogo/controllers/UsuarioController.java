@@ -1,7 +1,7 @@
-package com.example.catalogo.catalogo.controllers;
+package com.example.catalogo.controllers;
 
-import com.example.catalogo.catalogo.models.Usuario;
-import com.example.catalogo.catalogo.services.UsuarioService;
+import com.example.catalogo.models.Usuario;
+import com.example.catalogo.services.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

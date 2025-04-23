@@ -1,5 +1,5 @@
-package com.example.catalogo.catalogo.repositories;
-import com.example.catalogo.catalogo.models.Usuario;
+package com.example.catalogo.repositories;
+import com.example.catalogo.models.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
