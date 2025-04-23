@@ -1,101 +1,165 @@
+// -------------------- FUNÇÕES GERAIS --------------------
 function atualizarPreco(idPreco, preco) {
     document.getElementById(idPreco).innerText = `R$ ${parseFloat(preco).toFixed(2).replace('.', ',')}`;
 }
 
-// Ordenação de produtos por nome
-const produtoContainer = document.getElementById('produtos');
-const produtos = Array.from(produtoContainer.children);
-
-produtos.sort((a, b) => {
-    const nomeA = a.getAttribute('data-nome').toLowerCase();
-    const nomeB = b.getAttribute('data-nome').toLowerCase();
-    return nomeA.localeCompare(nomeB);
-});
-
-produtos.forEach(produto => produtoContainer.appendChild(produto));
-
-// Exibição de produtos com "Ver Mais"
-const produtosContainer = document.getElementById('produtos');
-const produto = Array.from(produtosContainer.getElementsByClassName('produto'));
+// -------------------- CARREGAMENTO DINÂMICO --------------------
+let produtosMostrados = 9; // Quantidade inicial (ajuste conforme seu layout)
+let todosProdutos = []; // Armazena todos os produtos carregados
 const btnVerMais = document.getElementById('ver-mais');
-let produtosMostrados = 15;
 
-function mostrarProdutos() {
-    produto.slice(0, produtosMostrados).forEach(produto => {
-        produto.style.display = 'block';
-    });
+async function carregarProdutos() {
+    try {
+        // Carrega TODOS os produtos da API (ou ajuste para uma categoria específica)
+        const response = await fetch('/api/produtos');
+        todosProdutos = await response.json();
+
+        // Renderiza os primeiros produtos
+        renderizarProdutos(todosProdutos.slice(0, produtosMostrados));
+
+        // Mostra/oculta o botão "Ver mais"
+        btnVerMais.style.display = todosProdutos.length > produtosMostrados ? 'block' : 'none';
+
+    } catch (error) {
+        console.error('Erro ao carregar produtos:', error);
+    }
 }
 
-// Inicialmente, esconda todos os produtos e mostre apenas os iniciais
-produto.forEach(produto => produto.style.display = 'none');
-mostrarProdutos();
+function renderizarProdutos(produtos) {
+    const container = document.getElementById('produtos');
+    container.innerHTML = produtos.map(produto => `
+        <div class="produto" data-nome="${produto.nome}">
+            <img src="${produto.imagemUrl}" alt="${produto.nome}">
+            <h3>${produto.nome}</h3>
+            <div class="volume-selector">
+                <label>Volume:</label>
+                <select onchange="atualizarPreco('preco-${produto.codigo}', this.value)">
+                    <option value="${produto.preco55ml}">55 ml</option>
+                    <option value="${produto.preco100ml}" selected>100 ml</option>
+                </select>
+            </div>
+            <p class="preco" id="preco-${produto.codigo}">R$ ${produto.preco100ml.toFixed(2).replace('.', ',')}</p>
+            <button class="add-to-cart" 
+                    data-id="${produto.codigo}" 
+                    data-nome="${produto.nome}" 
+                    data-preco="${produto.preco100ml}">
+                Adicionar ao Carrinho
+            </button>
+        </div>
+    `).join('');
+}
 
-btnVerMais.addEventListener('click', () => {
-    produtosMostrados += 15;
-    mostrarProdutos();
+// Evento do botão "Ver mais"
+btnVerMais?.addEventListener('click', () => {
+    produtosMostrados += 9; // Aumenta a quantidade exibida
+    renderizarProdutos(todosProdutos.slice(0, produtosMostrados));
 
-    if (produtosMostrados >= produto.length) {
+    // Oculta o botão se não houver mais produtos
+    if (produtosMostrados >= todosProdutos.length) {
         btnVerMais.style.display = 'none';
     }
 });
 
-// -------------------- ADMIN CONTROLE --------------------
+// -------------------- CONTROLE DE LOGIN/ADMIN --------------------
+document.addEventListener('DOMContentLoaded', () => {
+    carregarProdutos(); // Inicia o carregamento
 
-// Função para pegar parâmetros da URL
-function getParametroUrl(nome) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(nome);
-}
-
-// Detecta admin na URL e salva no localStorage
-document.addEventListener('DOMContentLoaded', function() {
-    const adminParam = getParametroUrl('admin');
-    if (adminParam) {
-        localStorage.setItem('admin', adminParam);
-    }
+    // Configura login/admin (mantido do seu código original)
+    const adminParam = new URLSearchParams(window.location.search).get('admin');
+    if (adminParam) localStorage.setItem('admin', adminParam);
 
     const isAdmin = localStorage.getItem('admin') === 'true';
-
     if (isAdmin) {
         const nav = document.querySelector('nav ul');
-        const adminItem = document.createElement('li');
-        const adminLink = document.createElement('a');
-        adminLink.href = 'admin.html';
-        adminLink.textContent = 'Painel Admin';
-        adminItem.appendChild(adminLink);
-        nav.appendChild(adminItem);
+        if (nav) {
+            const adminItem = document.createElement('li');
+            adminItem.innerHTML = '<a href="admin.html">Painel Admin</a>';
+            nav.appendChild(adminItem);
+        }
+    }
+
+    // Controle de login/logout
+    const loginLink = document.getElementById('login-logout-link');
+    if (loginLink) {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        loginLink.textContent = isLoggedIn ? 'Sair' : 'Login';
+        loginLink.onclick = (e) => {
+            e.preventDefault();
+            if (isLoggedIn) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('admin');
+                window.location.href = '/index.html';
+            } else {
+                window.location.href = '/login.html';
+            }
+        };
     }
 });
 
-// -------------------- LOGOUT --------------------
+// -------------------- CARRINHO DE COMPRAS --------------------
+let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
 
-// ... (código existente de produtos)
+function atualizarCarrinho() {
+    localStorage.setItem('carrinho', JSON.stringify(carrinho));
 
-// -------------------- LOGIN/LOGOUT --------------------
-document.addEventListener('DOMContentLoaded', function() {
-    const loginLink = document.getElementById('login-logout-link');
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    // Atualiza o contador do carrinho
+    const contador = document.querySelector('.carrinho-count');
+    if (contador) {
+        const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
+        contador.textContent = totalItens;
+        contador.style.display = totalItens > 0 ? 'block' : 'none';
+    }
 
-    if (loginLink) {
-        if (isLoggedIn) {
-            loginLink.textContent = 'Sair';
-            loginLink.onclick = async (e) => {
-                e.preventDefault();
-                try {
-                    await fetch('/logout');
-                    localStorage.removeItem('isLoggedIn');
-                    localStorage.removeItem('admin');
-                    window.location.href = '/index.html';
-                } catch (error) {
-                    console.error("Erro no logout:", error);
-                }
-            };
+    // Atualiza o dropdown do carrinho (se existir)
+    atualizarDropdownCarrinho();
+}
+
+function atualizarDropdownCarrinho() {
+    const dropdown = document.querySelector('.carrinho-dropdown');
+    if (dropdown) {
+        dropdown.innerHTML = carrinho.length === 0
+            ? '<p class="carrinho-vazio">Seu carrinho está vazio</p>'
+            : carrinho.map(item => `
+                <div class="carrinho-item">
+                    <img src="${item.imagem}" alt="${item.nome}">
+                    <div>
+                        <h4>${item.nome}</h4>
+                        <p>${item.volume} - R$ ${item.preco.toFixed(2)} x ${item.quantidade}</p>
+                    </div>
+                </div>
+            `).join('');
+    }
+}
+
+// Adicionar ao carrinho
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('add-to-cart')) {
+        const produtoElemento = e.target.closest('.produto');
+        const volumeSelecionado = produtoElemento.querySelector('select').value;
+        const preco = parseFloat(e.target.dataset.preco);
+
+        const produto = {
+            id: e.target.dataset.id,
+            nome: e.target.dataset.nome,
+            preco: preco,
+            quantidade: 1,
+            volume: volumeSelecionado === e.target.dataset.preco ? '100ml' : '55ml',
+            imagem: produtoElemento.querySelector('img').src
+        };
+
+        const itemExistente = carrinho.find(item => item.id === produto.id && item.volume === produto.volume);
+        if (itemExistente) {
+            itemExistente.quantidade++;
         } else {
-            loginLink.textContent = 'Login';
-            loginLink.onclick = (e) => {
-                e.preventDefault();
-                window.location.href = '/login.html';
-            };
+            carrinho.push(produto);
         }
+
+        atualizarCarrinho();
+
+        // Feedback visual
+        e.target.textContent = '✔ Adicionado';
+        setTimeout(() => {
+            e.target.textContent = 'Adicionar ao Carrinho';
+        }, 2000);
     }
 });

@@ -4,67 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Formulário de Produto</title>
+    <link rel="stylesheet" href="/css/admin.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 8px;
+        .preco-container {
+            display: flex;
+            gap: 20px;
             margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
         }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #218838;
-        }
-
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            text-decoration: none;
-            color: #007bff;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
+        .preco-group {
+            flex: 1;
         }
     </style>
 </head>
@@ -72,18 +20,39 @@
 <div class="container">
     <h1>Adicionar/Editar Produto</h1>
 
-    <form id="produto-form">
+    <form id="produto-form" enctype="multipart/form-data">
+        <input type="hidden" id="id">
+
         <label for="nome">Nome do Produto:</label>
-        <input type="text" id="nome" required />
+        <input type="text" id="nome" required>
 
         <label for="descricao">Descrição:</label>
-        <textarea id="descricao" rows="3" required></textarea>
+        <textarea id="descricao" rows="3"></textarea>
 
-        <label for="preco">Preço (R$):</label>
-        <input type="number" id="preco" required step="0.01" min="0" />
+        <div class="preco-container">
+            <div class="preco-group">
+                <label for="preco55ml">Preço 55ml (R$):</label>
+                <input type="number" id="preco55ml" step="0.01" min="0" required>
+            </div>
+            <div class="preco-group">
+                <label for="preco100ml">Preço 100ml (R$):</label>
+                <input type="number" id="preco100ml" step="0.01" min="0" required>
+            </div>
+        </div>
 
-        <label for="imagem">URL da Imagem:</label>
-        <input type="url" id="imagem" required />
+        <label for="codigo">Código do Produto:</label>
+        <input type="text" id="codigo" required>
+
+        <label for="categoria">Categoria:</label>
+        <select id="categoria" required>
+            <option value="">Selecione...</option>
+            <option value="masculino">Perfume Masculino</option>
+            <option value="feminino">Perfume Feminino</option>
+            <option value="hidratante">Hidratante</option>
+        </select>
+
+        <label for="imagem">Imagem do Produto:</label>
+        <input type="file" id="imagem" accept="image/*">
 
         <button type="submit">Salvar Produto</button>
     </form>
@@ -92,44 +61,83 @@
 </div>
 
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const index = urlParams.get('index');
-    const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('produto-form');
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
 
-    const form = document.getElementById('produto-form');
-    const nomeInput = document.getElementById('nome');
-    const descricaoInput = document.getElementById('descricao');
-    const precoInput = document.getElementById('preco');
-    const imagemInput = document.getElementById('imagem');
-
-    if (index !== null && produtos[index]) {
-        const produto = produtos[index];
-        nomeInput.value = produto.nome;
-        descricaoInput.value = produto.descricao;
-        precoInput.value = produto.preco;
-        imagemInput.value = produto.imagem;
-    }
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const produto = {
-            nome: nomeInput.value.trim(),
-            descricao: descricaoInput.value.trim(),
-            preco: parseFloat(precoInput.value),
-            imagem: imagemInput.value.trim()
-        };
-
-        if (index !== null && produtos[index]) {
-            produtos[index] = produto;
-        } else {
-            produtos.push(produto);
+        // Carrega dados se for edição
+        if (id) {
+            carregarProduto(id);
         }
 
-        localStorage.setItem('produtos', JSON.stringify(produtos));
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-        window.location.href = 'produtos.html';
+            // Validação dos preços
+            const preco55ml = parseFloat(document.getElementById('preco55ml').value);
+            const preco100ml = parseFloat(document.getElementById('preco100ml').value);
+
+            if (preco100ml <= preco55ml) {
+                alert('O preço para 100ml deve ser maior que para 55ml!');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('nome', document.getElementById('nome').value);
+            formData.append('descricao', document.getElementById('descricao').value);
+            formData.append('preco55ml', preco55ml);
+            formData.append('preco100ml', preco100ml);
+            formData.append('codigo', document.getElementById('codigo').value);
+            formData.append('categoria', document.getElementById('categoria').value);
+
+            const imagem = document.getElementById('imagem').files[0];
+            if (imagem) formData.append('imagem', imagem);
+
+            try {
+                const url = id ? `/api/produtos/${id}` : '/api/produtos';
+                const method = id ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method,
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const error = await response.text();
+                    throw new Error(error || 'Erro ao salvar produto');
+                }
+
+                alert('Produto salvo com sucesso!');
+                window.location.href = 'produtos.html';
+            } catch (error) {
+                console.error('Erro:', error);
+                alert(`Erro ao salvar produto: ${error.message}`);
+            }
+        });
     });
+
+    async function carregarProduto(id) {
+        try {
+            const response = await fetch(`/api/produtos/${id}`);
+            if (!response.ok) throw new Error('Produto não encontrado');
+
+            const produto = await response.json();
+
+            document.getElementById('id').value = produto.id;
+            document.getElementById('nome').value = produto.nome;
+            document.getElementById('descricao').value = produto.descricao || '';
+            document.getElementById('preco55ml').value = produto.preco55ml;
+            document.getElementById('preco100ml').value = produto.preco100ml;
+            document.getElementById('codigo').value = produto.codigo;
+            document.getElementById('categoria').value = produto.categoria;
+
+        } catch (error) {
+            console.error('Erro ao carregar produto:', error);
+            alert('Erro ao carregar dados do produto');
+            window.location.href = 'produtos.html';
+        }
+    }
 </script>
 </body>
 </html>

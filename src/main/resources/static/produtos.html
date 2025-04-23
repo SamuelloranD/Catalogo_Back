@@ -109,45 +109,48 @@
 </div>
 
 <script>
-    const produtos = JSON.parse(localStorage.getItem('produtos')) || [];
+    // Substitua todo o script por:
+    document.addEventListener('DOMContentLoaded', async () => {
+        const tbody = document.getElementById('produtos-tbody');
 
-    const tbody = document.getElementById('produtos-tbody');
+        try {
+            const response = await fetch('/api/produtos');
+            const produtos = await response.json();
 
-    function carregarProdutos() {
-        tbody.innerHTML = '';
+            tbody.innerHTML = produtos.map(produto => `
+            <tr>
+                <td>${produto.id}</td>
+                <td><img src="${produto.imagemUrl || 'imagens/sem-imagem.jpg'}" width="50"></td>
+                <td>${produto.nome}</td>
+                <td>${produto.descricao || '-'}</td>
+                <td>R$ ${produto.preco.toFixed(2)}</td>
+                <td>
+                    <button class="action-btn edit-btn"
+                            onclick="window.location.href='produto-form.html?id=${produto.id}'">
+                        Editar
+                    </button>
+                    <button class="action-btn delete-btn"
+                            onclick="deletarProduto(${produto.id})">
+                        Excluir
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+        } catch (error) {
+            console.error('Erro ao carregar produtos:', error);
+        }
+    });
 
-        produtos.forEach((produto, index) => {
-            const tr = document.createElement('tr');
-
-            tr.innerHTML = `
-          <td>${index + 1}</td>
-          <td><img src="${produto.imagem}" alt="${produto.nome}"></td>
-          <td>${produto.nome}</td>
-          <td>${produto.descricao}</td>
-          <td>R$ ${produto.preco}</td>
-          <td>
-            <button class="action-btn edit-btn" onclick="editarProduto(${index})">Editar</button>
-            <button class="action-btn delete-btn" onclick="deletarProduto(${index})">Excluir</button>
-          </td>
-        `;
-
-            tbody.appendChild(tr);
-        });
-    }
-
-    function editarProduto(index) {
-        window.location.href = `produto-form.html?index=${index}`;
-    }
-
-    function deletarProduto(index) {
+    async function deletarProduto(id) {
         if (confirm('Tem certeza que deseja excluir este produto?')) {
-            produtos.splice(index, 1);
-            localStorage.setItem('produtos', JSON.stringify(produtos));
-            carregarProdutos();
+            try {
+                await fetch(`/api/produtos/${id}`, { method: 'DELETE' });
+                window.location.reload();
+            } catch (error) {
+                console.error('Erro ao excluir:', error);
+            }
         }
     }
-
-    carregarProdutos();
 </script>
 </body>
 </html>
