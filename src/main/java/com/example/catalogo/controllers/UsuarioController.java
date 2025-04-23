@@ -38,21 +38,18 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public void login(@RequestParam("usuario") String usuario,
-                      @RequestParam("senha") String senha,
-                      HttpServletResponse response) throws IOException {
+    public ResponseEntity<String> login(
+            @RequestParam String usuario,
+            @RequestParam String senha) {
 
         Usuario usuarioEncontrado = usuarioService.buscarPorUsuario(usuario);
 
         if (usuarioEncontrado != null && usuarioEncontrado.getSenha().equals(senha)) {
-            if ("ADMIN".equals(usuarioEncontrado.getRole())) {
-                response.sendRedirect("/index.html?admin=true");
-            } else {
-                response.sendRedirect("/index.html?admin=false");
-            }
-        } else {
-            response.sendRedirect("/login.html?erro=true");
+            String redirectUrl = "/index.html?admin=" + "ADMIN".equals(usuarioEncontrado.getRole());
+            return ResponseEntity.ok(redirectUrl);
         }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body("Usuário ou senha incorretos. Por favor, tente novamente.");
     }
 
     @GetMapping("/listar")
@@ -62,9 +59,10 @@ public class UsuarioController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    public ResponseEntity<String> logout(HttpServletRequest request) {
         request.getSession().invalidate();
-        return "redirect:/login?logout";
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok("Logout realizado com sucesso");
     }
 
     @GetMapping("/api/check-admin")
@@ -79,6 +77,4 @@ public class UsuarioController {
         response.put("isAdmin", isAdmin);
         return response;
     }
-
-
 }

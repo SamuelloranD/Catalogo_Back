@@ -66,3 +66,36 @@ document.addEventListener('DOMContentLoaded', function() {
         nav.appendChild(adminItem);
     }
 });
+
+// -------------------- LOGOUT --------------------
+
+// ... (código existente de produtos)
+
+// -------------------- LOGIN/LOGOUT --------------------
+document.addEventListener('DOMContentLoaded', function() {
+    const loginLink = document.getElementById('login-logout-link');
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+    if (loginLink) {
+        if (isLoggedIn) {
+            loginLink.textContent = 'Sair';
+            loginLink.onclick = async (e) => {
+                e.preventDefault();
+                try {
+                    await fetch('/logout');
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('admin');
+                    window.location.href = '/index.html';
+                } catch (error) {
+                    console.error("Erro no logout:", error);
+                }
+            };
+        } else {
+            loginLink.textContent = 'Login';
+            loginLink.onclick = (e) => {
+                e.preventDefault();
+                window.location.href = '/login.html';
+            };
+        }
+    }
+});

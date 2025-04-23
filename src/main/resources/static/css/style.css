@@ -396,3 +396,32 @@ form button:active {
     margin-left: 20px; /* Espaço entre o form e a mensagem */
     min-height: 20px; /* Reserva espaço para a mensagem */
 }
+/* Estilo para a mensagem de erro */
+#erro-login {
+    color: #d9534f;
+    background-color: #f8d7da;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 15px auto;
+    max-width: 400px;
+    display: none;
+    border: 1px solid #f5c6cb;
+}
+
+/* Animação para aparecer suavemente */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Estilo para campos com erro */
+.campo-erro {
+    border: 2px solid #d9534f !important;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
