@@ -1,69 +1,178 @@
-// -------------------- FUNÇÕES GERAIS --------------------
-function atualizarPreco(idPreco, preco) {
-    document.getElementById(idPreco).innerText = `R$ ${parseFloat(preco).toFixed(2).replace('.', ',')}`;
-}
+document.addEventListener('DOMContentLoaded', async () => {
+    // Identifica qual página está sendo acessada
+    const path = window.location.pathname;
 
-// -------------------- CARREGAMENTO DINÂMICO --------------------
-let produtosMostrados = 9; // Quantidade inicial (ajuste conforme seu layout)
-let todosProdutos = []; // Armazena todos os produtos carregados
-const btnVerMais = document.getElementById('ver-mais');
+    if (path.includes('masculino100.html')) {
+        await carregarProdutosPorCategoria('masculino');
+    } else if (path.includes('feminino100.html')) {
+        await carregarProdutosPorCategoria('feminino');
+    } else {
+        await carregarTodosProdutos();
+    }
 
-async function carregarProdutos() {
+    // Configurações de login e carrinho
+    configurarLogin();
+    atualizarContadorCarrinho();
+});
+
+// Função para carregar produtos por categoria
+async function carregarProdutosPorCategoria(categoria) {
+    const container = document.getElementById('produtos');
+    const categoriaFormatada = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+
     try {
-        // Carrega TODOS os produtos da API (ou ajuste para uma categoria específica)
-        const response = await fetch('/api/produtos');
-        todosProdutos = await response.json();
+        const response = await fetch(`/api/produtos/${categoria}s`);
+        if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
 
-        // Renderiza os primeiros produtos
-        renderizarProdutos(todosProdutos.slice(0, produtosMostrados));
+        const produtos = await response.json();
+        console.log(`Produtos ${categoriaFormatada}:`, produtos);
 
-        // Mostra/oculta o botão "Ver mais"
-        btnVerMais.style.display = todosProdutos.length > produtosMostrados ? 'block' : 'none';
+        renderizarProdutos(produtos);
+
+        // Atualiza o título da seção se necessário
+        const tituloSecao = document.querySelector('#masculinos h2, #femininos h2');
+        if (tituloSecao) {
+            tituloSecao.textContent = categoriaFormatada;
+        }
 
     } catch (error) {
-        console.error('Erro ao carregar produtos:', error);
+        console.error(`Erro ao carregar produtos ${categoria}:`, error);
+        mostrarErroCarregamento(container);
     }
 }
 
+// Função para carregar todos os produtos (página principal)
+async function carregarTodosProdutos() {
+    const container = document.getElementById('produtos');
+
+    try {
+        const response = await fetch('/api/produtos');
+        if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+
+        const produtos = await response.json();
+        console.log("Todos os produtos:", produtos);
+
+        renderizarProdutos(produtos.slice(0, 12));
+
+        // Configura o botão "Ver Mais" se houver mais produtos
+        const btnVerMais = document.getElementById('ver-mais');
+        if (btnVerMais && produtos.length > 12) {
+            btnVerMais.style.display = 'block';
+            btnVerMais.addEventListener('click', () => {
+                const produtosMostrados = document.querySelectorAll('.produto').length;
+                renderizarProdutos(produtos.slice(0, produtosMostrados + 12));
+
+                if (produtosMostrados + 12 >= produtos.length) {
+                    btnVerMais.style.display = 'none';
+                }
+            });
+        }
+
+    } catch (error) {
+        console.error("Erro ao carregar produtos:", error);
+        mostrarErroCarregamento(container);
+    }
+}
+
+// Função para renderizar os produtos na tela
 function renderizarProdutos(produtos) {
     const container = document.getElementById('produtos');
     container.innerHTML = produtos.map(produto => `
-        <div class="produto" data-nome="${produto.nome}">
-            <img src="${produto.imagemUrl}" alt="${produto.nome}">
+        <div class="produto" data-id="${produto.id}" data-categoria="${produto.categoria}">
+            <img src="${produto.imagemUrl || 'imagens/sem-imagem.jpg'}" alt="${produto.nome}">
             <h3>${produto.nome}</h3>
+            <p class="marca">${produto.marca || ''}</p>
+            
+            <!-- Seletor de Volume -->
             <div class="volume-selector">
                 <label>Volume:</label>
-                <select onchange="atualizarPreco('preco-${produto.codigo}', this.value)">
-                    <option value="${produto.preco55ml}">55 ml</option>
-                    <option value="${produto.preco100ml}" selected>100 ml</option>
+                <select onchange="atualizarPreco('preco-${produto.id}', this.value, this)">
+                    <option style="text-align: center" value="${produto.preco55ml}">55ml</option>
+                    <option style="text-align: center" value="${produto.preco100ml}" selected>100ml</option>
                 </select>
             </div>
-            <p class="preco" id="preco-${produto.codigo}">R$ ${produto.preco100ml.toFixed(2).replace('.', ',')}</p>
-            <button class="add-to-cart" 
-                    data-id="${produto.codigo}" 
-                    data-nome="${produto.nome}" 
-                    data-preco="${produto.preco100ml}">
+            
+            <!-- Preço (será atualizado pelo seletor) -->
+            <p class="preco" id="preco-${produto.id}">R$ ${produto.preco100ml.toFixed(2).replace('.', ',')}</p>
+            
+            <!-- Botão de Comprar -->
+            <button class="add-to-cart" onclick="adicionarAoCarrinho(${produto.id})">
                 Adicionar ao Carrinho
             </button>
         </div>
     `).join('');
 }
 
-// Evento do botão "Ver mais"
-btnVerMais?.addEventListener('click', () => {
-    produtosMostrados += 9; // Aumenta a quantidade exibida
-    renderizarProdutos(todosProdutos.slice(0, produtosMostrados));
-
-    // Oculta o botão se não houver mais produtos
-    if (produtosMostrados >= todosProdutos.length) {
-        btnVerMais.style.display = 'none';
+// Funções auxiliares
+function atualizarPreco(idPreco, valor, selectElement) {
+    const precoElement = document.getElementById(idPreco);
+    if (precoElement) {
+        const preco = parseFloat(valor).toFixed(2).replace('.', ',');
+        precoElement.textContent = `R$ ${preco}`;
     }
-});
+}
 
-// -------------------- CONTROLE DE LOGIN/ADMIN --------------------
-document.addEventListener('DOMContentLoaded', () => {
-    carregarProdutos(); // Inicia o carregamento
+function adicionarAoCarrinho(produtoId) {
+    const produtoElement = document.querySelector(`.produto[data-id="${produtoId}"]`);
+    const selectVolume = produtoElement.querySelector('select');
+    const volumeSelecionado = selectVolume.options[selectVolume.selectedIndex].text;
+    const preco = parseFloat(selectVolume.value);
 
+    const produto = {
+        id: produtoId,
+        nome: produtoElement.querySelector('h3').textContent,
+        preco: preco,
+        quantidade: 1,
+        volume: volumeSelecionado.split(' - ')[0], // Pega apenas "55ml" ou "100ml"
+        imagem: produtoElement.querySelector('img').src,
+        categoria: produtoElement.dataset.categoria
+    };
+
+    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+    const itemExistente = carrinho.find(item =>
+        item.id === produto.id && item.volume === produto.volume
+    );
+
+    if (itemExistente) {
+        itemExistente.quantidade++;
+    } else {
+        carrinho.push(produto);
+    }
+
+    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+    atualizarContadorCarrinho();
+
+    // Feedback visual
+    const btn = produtoElement.querySelector('.add-to-cart');
+    btn.textContent = '✔ Adicionado';
+    setTimeout(() => {
+        btn.textContent = 'Adicionar ao Carrinho';
+    }, 2000);
+}
+
+function atualizarContadorCarrinho() {
+    const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+    const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
+    const contador = document.querySelector('.carrinho-count');
+
+    if (contador) {
+        contador.textContent = totalItens;
+        contador.style.display = totalItens > 0 ? 'block' : 'none';
+    }
+}
+
+function mostrarErroCarregamento(container) {
+    if (container) {
+        container.innerHTML = `
+            <div class="error-message">
+                Erro ao carregar produtos. Recarregue a página.
+                <button onclick="window.location.reload()">Recarregar</button>
+            </div>
+        `;
+    }
+}
+
+function configurarLogin() {
     // Configura login/admin (mantido do seu código original)
     const adminParam = new URLSearchParams(window.location.search).get('admin');
     if (adminParam) localStorage.setItem('admin', adminParam);
@@ -88,78 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isLoggedIn) {
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('admin');
-                window.location.href = '/index.html';
+                window.location.href = 'index.html';
             } else {
-                window.location.href = '/login.html';
+                window.location.href = 'login.html';
             }
         };
     }
-});
-
-// -------------------- CARRINHO DE COMPRAS --------------------
-let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-
-function atualizarCarrinho() {
-    localStorage.setItem('carrinho', JSON.stringify(carrinho));
-
-    // Atualiza o contador do carrinho
-    const contador = document.querySelector('.carrinho-count');
-    if (contador) {
-        const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
-        contador.textContent = totalItens;
-        contador.style.display = totalItens > 0 ? 'block' : 'none';
-    }
-
-    // Atualiza o dropdown do carrinho (se existir)
-    atualizarDropdownCarrinho();
 }
-
-function atualizarDropdownCarrinho() {
-    const dropdown = document.querySelector('.carrinho-dropdown');
-    if (dropdown) {
-        dropdown.innerHTML = carrinho.length === 0
-            ? '<p class="carrinho-vazio">Seu carrinho está vazio</p>'
-            : carrinho.map(item => `
-                <div class="carrinho-item">
-                    <img src="${item.imagem}" alt="${item.nome}">
-                    <div>
-                        <h4>${item.nome}</h4>
-                        <p>${item.volume} - R$ ${item.preco.toFixed(2)} x ${item.quantidade}</p>
-                    </div>
-                </div>
-            `).join('');
-    }
-}
-
-// Adicionar ao carrinho
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('add-to-cart')) {
-        const produtoElemento = e.target.closest('.produto');
-        const volumeSelecionado = produtoElemento.querySelector('select').value;
-        const preco = parseFloat(e.target.dataset.preco);
-
-        const produto = {
-            id: e.target.dataset.id,
-            nome: e.target.dataset.nome,
-            preco: preco,
-            quantidade: 1,
-            volume: volumeSelecionado === e.target.dataset.preco ? '100ml' : '55ml',
-            imagem: produtoElemento.querySelector('img').src
-        };
-
-        const itemExistente = carrinho.find(item => item.id === produto.id && item.volume === produto.volume);
-        if (itemExistente) {
-            itemExistente.quantidade++;
-        } else {
-            carrinho.push(produto);
-        }
-
-        atualizarCarrinho();
-
-        // Feedback visual
-        e.target.textContent = '✔ Adicionado';
-        setTimeout(() => {
-            e.target.textContent = 'Adicionar ao Carrinho';
-        }, 2000);
-    }
-});

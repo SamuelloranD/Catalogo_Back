@@ -98,9 +98,14 @@ public class ProdutoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/categoria/{categoria}")
-    public List<Produto> getPorCategoria(@PathVariable String categoria) {
-        return produtoService.buscarPorCategoria(categoria);
+    @GetMapping("/masculinos")
+    public List<Produto> getMasculinos() {
+        return produtoService.buscarPorCategoria("masculino");
+    }
+
+    @GetMapping("/femininos")
+    public List<Produto> getFemininos() {
+        return produtoService.buscarPorCategoria("feminino");
     }
 
     @PostMapping("/importar")

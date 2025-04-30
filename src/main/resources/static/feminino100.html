@@ -6,391 +6,36 @@
     <title>Perfumes Femininos</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="shortcut icon" href="imagens/logo.png" type="image/x-icon">
-
+    <script src="script/script.js"></script>
 </head>
 <body>
     <header>
-        <h1>Perfumes Femininos 100ml</h1>
+        <div class="logo-container">
+            <img src="imagens/logo.png" alt="Logo" class="logo">
+            <span class="text">RH Kosmetic</span>
+        </div>
+        <h1>Perfumes Femininos</h1>
         <nav>
             <ul>
                 <li><a href="index.html" target="_self">Voltar ao Catálogo</a></li>
                 <li>
-                    <a href="#" class="dropdown">Masculinos</a>
-                    <ul class="dropdown-content">
-                        <li><a href="masculino55.html" target="_self">55 ml</a></li>
-                        <li><a href="masculino100.html" target="_self">100 ml</a></li>
-                    </ul>
+                    <a href="masculino100.html" class="dropdown">Masculinos</a>
                 </li>
-                <li><a href="feminino55.html" target="_self">Femininos 55ml</a></li>
                 <li><a href="hidratantes.html" target="_blank">Hidratantes</a></li>
             </ul>
         </nav>
+        <div class="header-right">
+            <a href="#" id="login-logout-link">Login</a>
+            <a href="carrinho.html" class="carrinho-btn">
+                <img src="imagens/carrinho.png" alt="Carrinho">
+                <span class="carrinho-count">0</span>
+            </a>
+        </div>
     </header>
 
     <section id="femininos">
         <h2>Femininos</h2>
-        <div class="produtocontainer" id="produtos">
-            <div class="produto" data-nome="001-A.N.G Angel -Thierry Mugler">
-                <img src="imagens/001-Angel.jpg" alt="001-A.N.G Angel -Thierry Mugler">
-                <h3>001-A.N.G - Angel -Thierry Mugler</h3>
-                
-                <p class="preco" id="preco001-A.N.G Angel -Thierry Mugler">R$ 145,00</p>
-                <p>Código: 001</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 001-A.N.G Angel -Thierry Mugler. Código 001." target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="008 - C.H.A. Cinco - Chanel N 5 - Chanel">
-                <img src="imagens/008-Chanel.jpg" alt="008 - C.H.A. Cinco - Chanel N 5 - Chanel">
-                <h3>008-C.H.A. Cinco - Chanel N 5 - Chanel</h3>
-                
-                <p class="preco" id="preco008 - C.H.A. Cinco - Chanel N 5 - Chanel">R$ 145,00</p>
-                <p>Código: 008</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 008 - C.H.A. Cinco - Chanel N 5 - Chanel" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="010 - H.Y.P Hypnose - Lacôme ">
-                <img src="imagens/010-Hypnose.jpg" alt="010 - H.Y.P Hypnose - Lacôme ">
-                <h3>010 - H.Y.P Hypnose - Lacôme</h3>
-                
-                <p class="preco" id="preco010 - H.Y.P Hypnose - Lacôme">R$ 145,00</p>
-                <p>Código: 010</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 010 - H.Y.P Hypnose - Lacôme" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="017-G.A.B Gabriela Sabatini">
-                <img src="imagens/011-Million.jpg" alt="017-G.A.B Gabriela Sabatini">
-                <h3>017-G.A.B Gabriela Sabatini</h3>
-                
-                <p class="preco" id="preco017-G.A.B Gabriela Sabatinir">R$ 145,00</p>
-                <p>Código: 017</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 017-G.A.B Gabriela Sabatini" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="021-F.L.O Flower By Kenzo - Kenzo">
-                <img src="imagens/021-Flower.jpg" alt="021-F.L.O Flower By Kenzo - Kenzo ">
-                <h3>021-F.L.O Flower By Kenzo - Kenzo</h3>
-                
-                <p class="preco" id="preco021-F.L.O Flower By Kenzo - Kenzo">R$ 145,00</p>
-                <p>Código: 021</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 021-F.L.O Flower By Kenzo - Kenzo" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="022-F.A.N Fantasy - Britney Spears">
-                <img src="imagens/022-Fantasy.jpg" alt="022-F.A.N Fantasy - Britney Spears">
-                <h3>022-F.A.N Fantasy - Britney Spears</h3>
-                
-                <p class="preco" id="preco022-F.A.N Fantasy - Britney Spears">R$ 145,00</p>
-                <p>Código: 022</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 022-F.A.N Fantasy - Britney Spears" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="023-T.W.O 212- Carolina Herrera">
-                <img src="imagens/023-Ch212.jpg" alt="023-T.W.O 212- Carolina Herrera">
-                <h3>023-T.W.O 212- Carolina Herrera</h3>
-                
-                <p class="preco" id="preco023-T.W.O 212- Carolina Herrera">R$ 145,00</p>
-                <p>Código: 023</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 023-T.W.O 212- Carolina Herrera" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="024-C.H.C Ch - Carolina Herrera">
-                <img src="imagens/024-CH.jpg" alt="024-C.H.C Ch - Carolina Herrera">
-                <h3>024-C.H.C Ch - Carolina Herrera</h3>
-                
-                <p class="preco" id="preco024-C.H.C Ch - Carolina Herrera">R$ 145,00</p>
-                <p>Código: 024</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 024-C.H.C Ch - Carolina Herrera" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="033-A.M.A Amanrige - Givenchy ">
-                <img src="imagens/033-Amarige.jpg" alt="033-A.M.A Amanrige - Givenchy">
-                <h3>033-A.M.A Amanrige - Givenchy</h3>
-                
-                <p class="preco" id="preco033-A.M.A Amanrige - Givenchy">R$ 145,00</p>
-                <p>Código: 033</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 033-A.M.A Amanrige - Givenchy" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="034-D.O.L Light Light Blue - Dolce & Cabbana">
-                <img src="imagens/034-LightBlue.jpg" alt="034-D.O.L Light Light Blue - Dolce & Cabbana">
-                <h3>034-D.O.L Light Light Blue - Dolce & Cabbana</h3>
-                
-                <p class="preco" id="preco001-A.N.G Angel -Thierry Mugler">R$ 145,00</p>
-                <p>Código: 034</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 034-D.O.L Light Light Blue - Dolce & Cabbana" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="041-A.R.M Armani Code - Giorgio Armani">
-                <img src="imagens/produtos/041-ArmaniCode.jpg" alt="041-A.R.M Armani - Giorgio Armani">
-                <h3>041-A.R.M Armani Code - Giorgio Armani</h3>
-                
-                <p class="preco" id="preco041-A.R.M Armani Code - Giorgio Armani">R$ 145,00</p>
-                <p>Código: 041</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 041-A.R.M Armani Code - Giorgio Armani" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="071-E.T.E Eternity - Calvin Klein">
-                <img src="imagens/071-Eternity.jpg" alt="071-E.T.E Eternity - Calvin Klein">
-                <h3>071-E.T.E Eternity - Calvin Klein</h3>
-                
-                <p class="preco" id="preco071-E.T.E Eternity - Calvin Klein">R$ 145,00</p>
-                <p>Código: 071</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 071-E.T.E Eternity - Calvin Klein" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="074-L.A.V La Vie Est Belle - Lacome">
-                <img src="imagens/074-Belle.jpg" alt="074-L.A.V La Vie Est Belle - Lacome">
-                <h3>074-L.A.V La Vie Est Belle - Lacome</h3>
-            
-                <p class="preco" id="preco074-L.A.V La Vie Est Belle - Lacome">R$ 145,00</p>
-                <p>Código: 074</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 074-L.A.V La Vie Est Belle - Lacome" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="075-A.N.A Anais Anais - Cacharel">
-                <img src="imagens/075-Anais.jpg" alt="075-A.N.A Anais Anais - Cacharel">
-                <h3>075-A.N.A Anais Anais - Cacharel</h3>
-                
-                <p class="preco" id="preco075-A.N.A Anais Anais - Cacharel">R$ 145,00</p>
-                <p>Código: 075</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 075-A.N.A Anais Anais - Cacharel" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="076-L.I.L Lirius - Lily">
-                <img src="imagens/076-Lily.jpg" alt="076-L.I.L Lirius - Lily">
-                <h3>076-L.I.L Lirius - Lily</h3>
-                
-                <p class="preco" id="preco076-L.I.L Lirius - Lily">R$ 145,00</p>
-                <p>Código: 076</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 076-L.I.L Lirius - Lily" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="079-E.U.P Euphoria - Calvin Klein">
-                <img src="imagens/079-Euphoria.jpg" alt="079-E.U.P Euphoria - Calvin Klein">
-                <h3>079-E.U.P Euphoria - Calvin Klein</h3>
-                
-                <p class="preco" id="preco079-E.U.P Euphoria - Calvin Klein">R$ 145,00</p>
-                <p>Código: 079</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 079-E.U.P Euphoria - Calvin Klein" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="080-L.A.D Lady Milion - Paco Rabanne">
-                <img src="imagens/080-LadyMillion.jpg" alt="080-L.A.D Lady Milion - Paco Rabanne">
-                <h3>080-L.A.D Lady Milion - Paco Rabanne</h3>
-                
-                <p class="preco" id="preco080-L.A.D Lady Milion - Paco Rabanne">R$ 145,00</p>
-                <p>Código: 080</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 080-L.A.D Lady Milion - Paco Rabanne" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="085-T.O.M Tommy Girl - Tommy Helfiger">
-                <img src="imagens/085-Tommy.jpg" alt="085-T.O.M Tommy Girl - Tommy Helfiger">
-                <h3>085-T.O.M Tommy Girl - Tommy Helfiger</h3>
-                
-                <p class="preco" id="preco085-T.O.M Tommy Girl - Tommy Helfiger">R$ 145,00</p>
-                <p>Código: 085</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 085-T.O.M Tommy Girl - Tommy Helfiger" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="090-C.L.A Classique - Jean Paul Baultier">
-                <img src="imagens/090-Classique.jpg" alt="090-C.L.A Classique - Jean Paul Baultier">
-                <h3>090-C.L.A Classique - Jean Paul Baultier</h3>
-                
-                <p class="preco" id="preco090-C.L.A Classique - Jean Paul Baultier">R$ 145,00</p>
-                <p>Código: 090</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no 090-C.L.A Classique - Jean Paul Baultier" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="092-J.A.D J'adore - Dior">
-                <img src="imagens/092-Jadore.jpg" alt="092-J.A.D J'adore - Dior">
-                <h3>092-J.A.D J'adore - Dior</h3>
-                
-                <p class="preco" id="preco092-J.A.D J'adore - Dior">R$ 145,00</p>
-                <p>Código: 092</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 092-J.A.D J'adore - Dior" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="095-T.W.O Vip 212 Vip - Carolina Herrera">
-                <img src="imagens/095-212Vip.jpg" alt="095-T.W.O Vip 212 Vip - Carolina Herrera">
-                <h3>095-T.W.O Vip 212 Vip - Carolina Herrera</h3>
-                
-                <p class="preco" id="preco095-T.W.O Vip 212 Vip - Carolina Herrera">R$ 145,00</p>
-                <p>Código: 095</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 095-T.W.O Vip 212 Vip - Carolina Herrera" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="096-T.W.O Sexy 212 Sexy - Carolina Herrera">
-                <img src="imagens/096-212Sexy.jpg" alt="096-T.W.O Sexy 212 Sexy - Carolina Herrera">
-                <h3>096-T.W.O Sexy 212 Sexy - Carolina Herrera</h3>
-                
-                <p class="preco" id="preco096-T.W.O Sexy 212 Sexy - Carolina Herrera">R$ 145,00</p>
-                <p>Código: 096</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 096-T.W.O Sexy 212 Sexy - Carolina Herrera" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="100-T.W.O Rose 212 Vip Rose - Carolina Herrera">
-                <img src="imagens/100-212VipRose.jpg" alt="100-T.W.O Rose 212 Vip Rose - Carolina Herrera">
-                <h3>100-T.W.O Rose 212 Vip Rose - Carolina Herrera</h3>
-                
-                <p class="preco" id="preco100-T.W.O Rose 212 Vip Rose - Carolina Herrera">R$ 145,00</p>
-                <p>Código: 100</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 100-T.W.O Rose 212 Vip Rose - Carolina Herrera" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="102-C.H.A Chance - Chanel">
-                <img src="imagens/102-Chance.jpg" alt="102-C.H.A Chance - Chanel">
-                <h3>102-C.H.A Chance - Chanel</h3>
-                
-                <p class="preco" id="preco102-C.H.A Chance - Chanel">R$ 145,00</p>
-                <p>Código: 102</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 102-C.H.A Chance - Chanel" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="103-O.L.Y Olympea - Paco Rabanne">
-                <img src="imagens/103-Olympea.jpg" alt="103-O.L.Y Olympea - Paco Rabanne">
-                <h3>103-O.L.Y Olympea - Paco Rabanne</h3>
-                
-                <p class="preco" id="preco103-O.L.Y Olympea - Paco Rabanne">R$ 145,00</p>
-                <p>Código: 103</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 103-O.L.Y Olympea - Paco Rabanne" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="105-G.D.O Good Girl - Carolina Herrera">
-                <img src="imagens/105-GoodGirl.jpg" alt="105-G.D.O Good Girl - Carolina Herrera">
-                <h3>105-G.D.O Good Girl - Carolina Herrera</h3>
-                
-                <p class="preco" id="preco105-G.D.O Good Girl - Carolina Herrera">R$ 145,00</p>
-                <p>Código: 105</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 105-G.D.O Good Girl - Carolina Herrera" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="106-C.O.C Coco Mademoiselle - Chanel">
-                <img src="imagens/106-Mademoiselle.jpg" alt="106-C.O.C Coco Mademoiselle - Chanel">
-                <h3>106-C.O.C Coco Mademoiselle - Chanel</h3>
-                
-                <p class="preco" id="preco106-C.O.C Coco Mademoiselle - Chanel">R$ 145,00</p>
-                <p>Código: 106</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 106-C.O.C Coco Mademoiselle - Chanel" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="108-C.H.L Chloé - Chloé">
-                <img src="imagens/108-Chloe.jpg" alt="108-C.H.L Chloé - Chloé">
-                <h3>108-C.H.L Chloé - Chloé</h3>
-                
-                <p class="preco" id="preco108-C.H.L Chloé - Chloé">R$ 145,00</p>
-                <p>Código: 108</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 108-C.H.L Chloé - Chloé" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="110-L.A.D Lucky Lady Million Lucky -  Paco Rabanne">
-                <img src="imagens/110-LadyLucky.jpg" alt="110-L.A.D Lucky Lady Million Lucky -  Paco Rabanne">
-                <h3>110-L.A.D Lucky Lady Million Lucky -  Paco Rabanne</h3>
-                
-                <p class="preco" id="preco110-L.A.D Lucky Lady Million Lucky -  Paco Rabanne">R$ 145,00</p>
-                <p>Código: 110</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 110-L.A.D Lucky Lady Million Lucky -  Paco Rabanne" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="113-O.L.Y Intense - Olympea Intense - Paco Rabanne">
-                <img src="imagens/113-OlympeaIntense.jpg" alt="113-O.L.Y Intense - Olympea Intense - Paco Rabanne">
-                <h3>113-O.L.Y Intense - Olympea Intense - Paco Rabanne</h3>
-                
-                <p class="preco" id="preco113-O.L.Y Intense - Olympea Intense - Paco Rabanne">R$ 145,00</p>
-                <p>Código: 113</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 113-O.L.Y Intense - Olympea Intense - Paco Rabanne" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="114-S.C.A Scandal - Jean Paul Gaultier">
-                <img src="imagens/114-Scandal.jpg" alt="114-S.C.A Scandal - Jean Paul Gaultier">
-                <h3>097-114-S.C.A Scandal - Jean Paul Gaultier</h3>
-                
-                <p class="preco" id="preco114-S.C.A Scandal - Jean Paul Gaultier">R$ 145,00</p>
-                <p>Código: 114</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 114-S.C.A Scandal - Jean Paul Gaultier" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="116-L.A.N La Nuit Tresor - Lacôme">
-                <img src="imagens/116-LaNuit.jpg" alt="116-L.A.N La Nuit Tresor - Lacôme">
-                <h3>116-L.A.N La Nuit Tresor - Lacôme</h3>
-                
-                <p class="preco" id="preco116-L.A.N La Nuit Tresor - Lacôme">R$ 145,00</p>
-                <p>Código: 116</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 116-L.A.N La Nuit Tresor - Lacôme" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="117-S.I.G Sì - Giorgio Armani">
-                <img src="imagens/117-Si.jpg" alt="117-S.I.G Sì - Giorgio Armani">
-                <h3>117-S.I.G Sì - Giorgio Armani</h3>
-                
-                <p class="preco" id="preco117-S.I.G Sì - Giorgio Armani">R$ 145,00</p>
-                <p>Código: 117</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 117-S.I.G Sì - Giorgio Armani" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="118-Y.E.S Yes I Am - Cacharel">
-                <img src="imagens/118-YesIAm.jpg" alt="118-Y.E.S Yes I Am - Cacharel">
-                <h3>118-Y.E.S Yes I Am - Cacharel</h3>
-                
-                <p class="preco" id="preco118-Y.E.S Yes I Am - Cacharel">R$ 145,00</p>
-                <p>Código: 118</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 118-Y.E.S Yes I Am - Cacharel" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="121-I.D.O Idôle - Lacôme ">
-                <img src="imagens/121-Idole.jpg" alt="121-I.D.O Idôle - Lacôme ">
-                <h3>121-I.D.O Idôle - Lacôme </h3>
-                
-                <p class="preco" id="preco121-I.D.O Idôle - Lacôme ">R$ 145,00</p>
-                <p>Código: 121</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 121-I.D.O Idôle - Lacôme " target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="122-P.I.N Pink Sugar - Aquolina">
-                <img src="imagens/122-PinkSugar.jpg" alt="122-P.I.N Pink Sugar - Aquolina">
-                <h3>122-P.I.N Pink Sugar - Aquolina</h3>
-                
-                <p class="preco" id="preco122-P.I.N Pink Sugar - Aquolina">R$ 145,00</p>
-                <p>Código: 122</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 122-P.I.N Pink Sugar - Aquolina" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="123-A.L.I Alien - Thierry Mugler">
-                <img src="imagens/123-Alien.jpg" alt="123-A.L.I Alien - Thierry Mugler">
-                <h3>123-A.L.I Alien - Thierry Mugler</h3>
-                
-                <p class="preco" id="preco123-A.L.I Alien - Thierry Mugler">R$ 145,00</p>
-                <p>Código: 123</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 123-A.L.I Alien - Thierry Mugler" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="124-P.O.I Hyp Hypinotic Poison - Dior">
-                <img src="imagens/124-Hypnoticpoison.jpg" alt="124-P.O.I Hyp Hypinotic Poison - Dior">
-                <h3>124-P.O.I Hyp Hypinotic Poison - Dior</h3>
-                
-                <p class="preco" id="preco124-P.O.I Hyp Hypinotic Poison - Dior">R$ 145,00</p>
-                <p>Código: 124</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 124-P.O.I Hyp Hypinotic Poison - Dior" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="126-L.I.B Libre - Yves Saint Laurent ">
-                <img src="imagens/126-Libre.jpg" alt="126-L.I.B Libre - Yves Saint Laurent">
-                <h3>126-L.I.B Libre - Yves Saint Laurent</h3>
-                
-                <p class="preco" id="preco126-L.I.B Libre - Yves Saint Laurent">R$ 145,00</p>
-                <p>Código: 126</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 126-L.I.B Libre - Yves Saint Laurent" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="128-G.O.O Very Very Good Girl - Carolina Herrera">
-                <img src="imagens/128-VeryGoodGirl.jpg" alt="128-G.O.O Very Very Good Girl - Carolina Herrera">
-                <h3>128-G.O.O Very Very Good Girl - Carolina Herrera</h3>
-                
-                <p class="preco" id="preco128-G.O.O Very Very Good Girl - Carolina Herrera">R$ 145,00</p>
-                <p>Código: 128</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 128-G.O.O Very Very Good Girl - Carolina Herrera" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="129-F.A.M Fame - Paco Rabanne">
-                <img src="imagens/129-Fame.jpg" alt="129-F.A.M Fame - Paco Rabanne">
-                <h3>129-F.A.M Fame - Paco Rabanne</h3>
-                
-                <p class="preco" id="preco129-F.A.M Fame - Paco Rabanne">R$ 145,00</p>
-                <p>Código: 129</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 129-F.A.M Fame - Paco Rabanne" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="130-L.I.N L'Indert - Givenchy ">
-                <img src="imagens/130-LInterdit.jpg" alt="130-L.I.N L'Indert - Givenchy ">
-                <h3>130-L.I.N L'Indert - Givenchy </h3>
-                
-                <p class="preco" id="preco130-L.I.N L'Indert - Givenchy ">R$ 145,00</p>
-                <p>Código: 130</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 130-L.I.N L'Indert - Givenchy " target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="132-M.Y.W My Way - Giorgio Armani">
-                <img src="imagens/132-MyWay.jpg" alt="132-M.Y.W My Way - Giorgio Armani">
-                <h3>132-M.Y.W My Way - Giorgio Armani</h3>
-                
-                <p class="preco" id="preco132-M.Y.W My Way - Giorgio Armani">R$ 145,00</p>
-                <p>Código: 132</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 132-M.Y.W My Way - Giorgio Armani" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="133-E.G.E Egeo Dolce">
-                <img src="imagens/133-EgeoDolce.jpg" alt="133-E.G.E Egeo Dolce">
-                <h3>133-E.G.E Egeo Dolce</h3>
-                
-                <p class="preco" id="preco133-E.G.E Egeo Dolce">R$ 145,00</p>
-                <p>Código: 133</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 133-E.G.E Egeo Dolce" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto" data-nome="136-I.R.R  Irresistible - Givenchy">
-                <img src="imagens/136-Irresistible.jpg" alt="136-I.R.R  Irresistible - Givenchy">
-                <h3>136-I.R.R  Irresistible - Givenchy</h3>
-            
-                <p class="preco" id="preco136-I.R.R  Irresistible - Givenchy">R$ 145,00</p>
-                <p>Código: 136</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Perfume 136-I.R.R  Irresistible - Givenchy" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>  
-        </div>
+        <div class="produtocontainer" id="produtos"></div>
         <button id="ver-mais">Ver Mais</button>
     </section>
 
@@ -401,7 +46,5 @@
     <a href="https://wa.me/5583987414640" class="whatsapp-btn2" target="_blank" title="Converse conosco no WhatsApp">
         <img src="imagens/whatsapp-icon.png" alt="WhatsApp">
     </a>
-    
-    <script src="script/script.js"></script>
 </body>
 </html>
