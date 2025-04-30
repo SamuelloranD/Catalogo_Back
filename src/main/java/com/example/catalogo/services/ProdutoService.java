@@ -87,4 +87,9 @@ public class ProdutoService {
 
         return "/imagens/produtos/" + nomeArquivo;
     }
+
+    public Produto buscarPorId(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+    }
 }

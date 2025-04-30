@@ -109,28 +109,30 @@
 </div>
 
 <script>
-    // Substitua todo o script por:
     document.addEventListener('DOMContentLoaded', async () => {
         const tbody = document.getElementById('produtos-tbody');
 
         try {
             const response = await fetch('/api/produtos');
+            if (!response.ok) throw new Error("Erro na API: " + response.status);
+
             const produtos = await response.json();
+            console.log("Dados recebidos:", produtos);
 
             tbody.innerHTML = produtos.map(produto => `
-            <tr>
+            <tr data-id="${produto.id}">
                 <td>${produto.id}</td>
                 <td><img src="${produto.imagemUrl || 'imagens/sem-imagem.jpg'}" width="50"></td>
                 <td>${produto.nome}</td>
                 <td>${produto.descricao || '-'}</td>
-                <td>R$ ${produto.preco.toFixed(2)}</td>
+                <td>R$ ${produto.preco55ml.toFixed(2)}</td>
                 <td>
                     <button class="action-btn edit-btn"
                             onclick="window.location.href='produto-form.html?id=${produto.id}'">
                         Editar
                     </button>
                     <button class="action-btn delete-btn"
-                            onclick="deletarProduto(${produto.id})">
+                            onclick="deletarProduto(${produto.id}, this)">
                         Excluir
                     </button>
                 </td>
@@ -138,17 +140,31 @@
         `).join('');
         } catch (error) {
             console.error('Erro ao carregar produtos:', error);
+            tbody.innerHTML = `<tr><td colspan="6">Erro ao carregar dados. Verifique o console.</td></tr>`;
         }
     });
 
-    async function deletarProduto(id) {
-        if (confirm('Tem certeza que deseja excluir este produto?')) {
-            try {
-                await fetch(`/api/produtos/${id}`, { method: 'DELETE' });
-                window.location.reload();
-            } catch (error) {
-                console.error('Erro ao excluir:', error);
+    // Função separada para exclusão
+    async function deletarProduto(id, button) {
+        if (!confirm('Tem certeza que deseja excluir este produto permanentemente?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/produtos/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao excluir');
             }
+
+            // Remove a linha da tabela
+            button.closest('tr').remove();
+            alert('Produto excluído com sucesso!');
+        } catch (error) {
+            console.error('Falha ao excluir:', error);
+            alert('Falha ao excluir: ' + error.message);
         }
     }
 </script>

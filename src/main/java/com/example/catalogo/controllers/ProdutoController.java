@@ -22,7 +22,15 @@ public class ProdutoController {
 
     @GetMapping
     public List<Produto> listarTodos() {
-        return produtoService.listarTodos();
+        List<Produto> produtos = produtoService.listarTodos();
+        System.out.println("Produtos encontrados: " + produtos.size()); // ← Adicione esta linha
+        return produtos;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Produto> buscarPorId(@PathVariable Long id) {
+        Produto produto = produtoService.buscarPorId(id);
+        return ResponseEntity.ok(produto);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -54,11 +62,34 @@ public class ProdutoController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Produto> atualizarProduto(
             @PathVariable Long id,
-            @RequestBody Produto produto) {
-        return ResponseEntity.ok(produtoService.atualizar(id, produto));
+            @RequestParam String nome,
+            @RequestParam String descricao,
+            @RequestParam Double preco55ml,
+            @RequestParam Double preco100ml,
+            @RequestParam String codigo,
+            @RequestParam String categoria,
+            @RequestParam(required = false) MultipartFile imagem) {
+
+        try {
+            Produto produto = produtoService.buscarPorId(id);
+            produto.setNome(nome);
+            produto.setDescricao(descricao);
+            produto.setPreco55ml(preco55ml);
+            produto.setPreco100ml(preco100ml);
+            produto.setCodigo(codigo);
+            produto.setCategoria(categoria);
+
+            if (imagem != null && !imagem.isEmpty()) {
+                produto.setImagemUrl(produtoService.uploadImagem(imagem));
+            }
+
+            return ResponseEntity.ok(produtoService.salvar(produto));
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @DeleteMapping("/{id}")
