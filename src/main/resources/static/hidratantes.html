@@ -3,183 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hidratantes</title>
+    <title>Hidratantes Corporais</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="shortcut icon" href="imagens/logo.png" type="image/x-icon">
-
+    <script src="script/hidratantes.js"></script> <!-- Novo arquivo JS específico -->
 </head>
 <body>
-    <header>
-        <h1>Hidratantes</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html" target="_self">Voltar ao Catálogo</a></li>
-            </ul>
-        </nav>
-    </header>
+<header>
+    <div class="logo-container">
+        <img src="imagens/logo.png" alt="Logo" class="logo">
+        <span class="text">RH Kosmetic</span>
+    </div>
+    <h1>Hidratantes Corporais</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html" target="_self">Voltar ao Catálogo</a></li>
+            <li><a href="masculino100.html">Masculinos</a></li>
+            <li><a href="feminino100.html">Femininos</a></li>
+        </ul>
+    </nav>
+    <div class="header-right">
+        <a href="#" id="login-logout-link">Login</a>
+        <a href="carrinho.html" class="carrinho-btn">
+            <img src="imagens/carrinho.png" alt="Carrinho">
+            <span class="carrinho-count">0</span>
+        </a>
+    </div>
+</header>
 
-    <section id="hidratantes">
-        <h2>Hidratantes</h2>
-        <div class="produtocontainer"id="produtos">
-            <div class="produto">
-                <img src="imagens_hidratantes/Abacaix-Creminho60g.jpg" alt="Hidratante 001">
-                <h3>Hidratante 001- Abacaxi Creminho 60g</h3>
-                <p>R$ 19,90</p>
-                <p>Hidratante 001</p>
-                <a href="https://wa.me/5583987414640?text=Olá, tenho interesse no Hidratante 001- Abacaxi Creminho 60g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/AlgodaoDoce-Hidrante200g.jpg" alt="Hidratante 002">
-                <h3>Hidratante 002- Algodao Doce 200g</h3>
-                <p>R$ 44,90</p>
-                <p>Hidratante 002</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 002- AlgodaoDoce 200g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/BalaMenta-Hidrante200g.jpg" alt="Hidratante 003">
-                <h3>Hidratante 003- BalaMenta 200g </h3>
-                <p>R$ 44,90</p>
-                <p>Hidratante 003</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 003- BalaMenta 200g " target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Bela-Creminho60g.jpg" alt="Hidratante 004">
-                <h3>Hidratante 004- Bela Creminho 60g </h3>
-                <p>R$ 19,90</p>
-                <p>Hidratante 004</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 004- Bela-Creminho 60g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Bela-Hidrante200g.jpg" alt="Hidratante 005">
-                <h3>Hidratante 005- Bela 200g</h3>
-                <p>R$ 44,90</p>
-                <p>Hidratante 005</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 005- Bela 200g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Caramelo-Hidrante200g.jpg" alt="Hidratante 006">
-                <h3>Hidratante 006- Caramelo 200g</h3>
-                <p>R$ 44,90</p>
-                <p>Hidratante 006</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 006- Caramelo 200g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Chiclete-Hidrante200g.jpg" alt="Hidratante 007">
-                <h3>Hidratante 007- Chiclete 200g</h3>
-                <p>R$ 44,90</p>
-                <p>Hidratante 007</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 007- Chiclete 200g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Chocola-Hidrante200g.jpg" alt="Hidratante 008">
-                <h3>Hidratante 008- Chocolate 200g</h3>
-                <p>R$ 44,90</p>
-                <p>Hidratante 008</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 008- Chocolate 200g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Doceo-Creminho60g.jpg" alt="Hidratante 009">
-                <h3>Hidratante 009- Doceo Creminho 60g</h3>
-                <p>R$ 19,90</p>
-                <p>Hidratante 009</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 009- Doceo Creminho 60g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Famous-Creminho60g.jpg" alt="Hidratante 010">
-                <h3>Hidratante 010- Famous Creminho 60g</h3>
-                <p>R$ 19,90</p>
-                <p>Hidratante 010</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 010- Famous Creminho 60g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Girl-Creminho60g.jpg" alt="Hidratante 011">
-                <h3>Hidratante 011- Girl Creminho 60g</h3>
-                <p>R$ 19,90</p>
-                <p>Hidratante 011</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 011- Girl Creminho 60g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Girl-Hidrante200g.jpg" alt="Hidratante 012">
-                <h3>Hidratante 012- Girl 200g</h3>
-                <p>R$ 44,90</p>
-                <p>Hidratante 012</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 012- Girl 200g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Iam-Creminho60g.jpg" alt="Hidratante 013">
-                <h3>Hidratante 013- Iam Creminho 60g</h3>
-                <p>R$ 19,90</p>
-                <p>Hidratante 013</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 013- Iam Creminho 60g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Lirius-Creminho60g.jpg" alt="Hidratante 014">
-                <h3>Hidratante 014- Lirius Creminho 60g</h3>
-                <p>R$ 19,90</p>
-                <p>Hidratante 014</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 014- Lirius Creminho 60g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Marshmallow-Creminho20g.jpg" alt="Hidratante 015">
-                <h3>Hidratante 015- Marshmallow Creminho 60g</h3>
-                <p>R$ 19,90</p>
-                <p>Hidratante 015</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 015- Marshmallow Creminho 60g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Marshmallow-Hidrante200g.jpg" alt="Hidratante 016">
-                <h3>Hidratante 016- Marshmallow 200g</h3>
-                <p>R$ 44,90</p>
-                <p>Hidratante 016</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 016- Marshmallow 200g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Morango-Creminho60g.jpg" alt="Hidratante 017">
-                <h3>Hidratante 017- Morango Creminho 60g</h3>
-                <p>R$ 19,90</p>
-                <p>Hidratante 017</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 017- Morango Creminho 60g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Morango-Hidrante200g.jpg" alt="Hidratante 018">
-                <h3>Hidratante 018- Morango 200g</h3>
-                <p>R$ 44,90</p>
-                <p>Hidratante 018</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 018- Morango 200g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/OleoAmendoas120ml.jpg" alt="Hidratante 019">
-                <h3>Hidratante 019- Oleo Amendoas 120ml</h3>
-                <p>R$ 30,00</p>
-                <p>Hidratante 019</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 019- Oleo Amendoas 120ml" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Roses-Creminho60g.jpg" alt="Hidratante 020">
-                <h3>Hidratante 020- Roses Creminho 60g</h3>
-                <p>R$ 19,90</p>
-                <p>Hidratante 020</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 020- Roses Creminho 60g" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-            <div class="produto">
-                <img src="imagens_hidratantes/Star-Creminho60g.jpg" alt="Hidratante 021">
-                <h3>Hidratante 021- Star Creminho 60g</h3>
-                <p>R$ 19,90</p>
-                <p>Hidratante 021</p>
-                <a href="https://wa.me/558383987414640?text=Olá, tenho interesse no Hidratante 21" target="_blank" class="whatsapp-btn">Falar com Vendedor</a>
-            </div>
-        </div>
-        
+<section id="hidratantes">
+    <h2>Hidratantes</h2>
+    <div class="produtocontainer" id="produtos"></div>
+    <button id="ver-mais">Ver Mais</button>
+</section>
 
-    </section>
+<footer>
+    <p>© 2024 RH Kosmetic</p>
+</footer>
 
-    <footer>
-        <p>© 2024 RH Kosmetic</p>
-    </footer>
-
-    <a href="https://wa.me/5583987414640" class="whatsapp-btn2" target="_blank" title="Converse conosco no WhatsApp">
-        <img src="imagens/whatsapp-icon.png" alt="WhatsApp">
-    </a>
-    
+<a href="https://wa.me/5583987414640" class="whatsapp-btn2" target="_blank" title="Converse conosco no WhatsApp">
+    <img src="imagens/whatsapp-icon.png" alt="WhatsApp">
+</a>
 </body>
 </html>
