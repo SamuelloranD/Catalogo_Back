@@ -20,15 +20,5 @@ public class Usuario {
 
     private String role;
 
-    // Não persiste o campo csenha no banco de dados, é usado apenas para validação
-    /*@Transient
-    private String csenha;*/
 
-    /*public String getCsenha() {
-        return csenha;
-    }
-
-    public void setCsenha(String csenha) {
-        this.csenha = csenha;
-    }*/
 }

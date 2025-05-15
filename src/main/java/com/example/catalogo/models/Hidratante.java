@@ -19,6 +19,6 @@ public class Hidratante {
     private Double preco;
     private String codigo;
     private String imagemUrl;
-    private String volume; // Ex: "60g", "100ml" - extraído do nome
+    private String volume;
     private String descricao;
 }

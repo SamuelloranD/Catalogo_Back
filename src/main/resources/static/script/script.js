@@ -113,6 +113,16 @@ function atualizarPreco(idPreco, valor, selectElement) {
 }
 
 function adicionarAoCarrinho(produtoId) {
+    // Verifica se o usuário está logado (exemplo: token no localStorage)
+    const usuarioLogado = localStorage.getItem('isLoggedIn') === 'true';
+
+    if (!usuarioLogado) {
+        alert("Você precisa estar logado para adicionar itens ao carrinho.");
+        window.location.href = "login.html"; // Redireciona para login
+        return; // Interrompe a função
+    }
+
+    // Se estiver logado, continua o processo original
     const produtoElement = document.querySelector(`.produto[data-id="${produtoId}"]`);
     const selectVolume = produtoElement.querySelector('select');
     const volumeSelecionado = selectVolume.options[selectVolume.selectedIndex].text;
@@ -123,7 +133,7 @@ function adicionarAoCarrinho(produtoId) {
         nome: produtoElement.querySelector('h3').textContent,
         preco: preco,
         quantidade: 1,
-        volume: volumeSelecionado.split(' - ')[0], // Pega apenas "55ml" ou "100ml"
+        volume: volumeSelecionado.split(' - ')[0],
         imagem: produtoElement.querySelector('img').src,
         categoria: produtoElement.dataset.categoria
     };
