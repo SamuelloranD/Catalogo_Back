@@ -10,30 +10,35 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     erroElement.textContent = '';
 
     try {
-        const response = await fetch('/login', {
+        const response = await fetch("http://localhost:8080/login", {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
             },
-            body: `usuario=${encodeURIComponent(usuario)}&senha=${encodeURIComponent(senha)}`
+            credentials: 'include', // necessário para enviar cookie da sessão
+            body: JSON.stringify({ usuario, senha })
         });
 
-        if (response.ok) {
-            const url = await response.text();
-            localStorage.setItem('isLoggedIn', 'true');
+        const data = await response.json();
 
-            if (url.includes('admin=true')) {
+        if (response.ok && data.success) {
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('token', data.token); // salva o token JWT
+
+            if (data.admin) {
                 localStorage.setItem('admin', 'true');
+            } else {
+                localStorage.removeItem('admin');
             }
 
-            window.location.href = url;
-        } else {
-            // Mostra mensagem de erro com animação
-            erroElement.textContent = 'Usuário ou senha incorretos!';
+            window.location.href = '/index.html';
+        }
+
+        else {
+            erroElement.textContent = data.message || 'Usuário ou senha incorretos!';
             erroElement.style.display = 'block';
             erroElement.style.animation = 'fadeIn 0.5s';
 
-            // Adiciona classe de erro nos campos
             document.getElementById('usuario').classList.add('campo-erro');
             document.getElementById('senha').classList.add('campo-erro');
         }

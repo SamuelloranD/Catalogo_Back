@@ -3,10 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('carrinho-itens');
     const totalElement = document.getElementById('total');
 
-    // Renderiza o carrinho ao carregar a página
     renderizarCarrinho();
 
-    // Função para renderizar os itens do carrinho
     function renderizarCarrinho() {
         if (carrinho.length === 0) {
             container.innerHTML = '<p class="carrinho-vazio">Seu carrinho está vazio</p>';
@@ -32,24 +30,19 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `).join('');
 
-        // Atualiza o total
         atualizarTotal();
     }
 
-    // Atualiza o valor total
     function atualizarTotal() {
         const total = carrinho.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
         totalElement.textContent = total.toFixed(2);
     }
 
-    // Atualiza o carrinho no localStorage
     function salvarCarrinho() {
         localStorage.setItem('carrinho', JSON.stringify(carrinho));
     }
 
-    // Eventos para os botões de quantidade
     container.addEventListener('click', (e) => {
-        // Aumentar/Diminuir quantidade
         if (e.target.classList.contains('btn-quantidade') || e.target.closest('.btn-quantidade')) {
             const button = e.target.classList.contains('btn-quantidade') ? e.target : e.target.closest('.btn-quantidade');
             const id = button.dataset.id;
@@ -66,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
             renderizarCarrinho();
         }
 
-        // Remover item
         if (e.target.classList.contains('btn-remover') || e.target.closest('.btn-remover')) {
             const button = e.target.classList.contains('btn-remover') ? e.target : e.target.closest('.btn-remover');
             const id = button.dataset.id;
@@ -79,29 +71,61 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Finalizar compra via WhatsApp
     document.getElementById('finalizar-compra').addEventListener('click', finalizarCompra);
 
-    // Função para finalizar a compra
-    function finalizarCompra() {
+    async function finalizarCompra() {
         if (carrinho.length === 0) {
             alert('Seu carrinho está vazio!');
             return;
         }
 
-        const mensagem = formatarMensagemWhatsApp();
-        const mensagemCodificada = encodeURIComponent(mensagem);
-        const numeroWhatsApp = '558399016170'; // Substitua pelo seu número
+        const itens = carrinho.map(item => ({
+            produto: { id: item.id },
+            quantidade: item.quantidade,
+            precoUnitario: item.preco
+        }));
 
-        window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemCodificada}`, '_blank');
+        const valorTotal = itens.reduce((soma, item) => soma + item.precoUnitario * item.quantidade, 0);
 
-        // Opcional: Limpar o carrinho após finalizar
-        // carrinho.length = 0;
-        // salvarCarrinho();
-        // renderizarCarrinho();
+        const venda = {
+            itens: itens,
+            valorTotal: valorTotal
+        };
+
+        try {
+            const token = localStorage.getItem('token');
+            console.log("Token JWT:", token); // <-- AQUI, dentro do try e ANTES do fetch
+
+            if (!token) {
+                alert("Você precisa estar logado para finalizar a compra.");
+                return;
+            }
+
+            const response = await fetch("http://localhost:8080/vendas", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(venda)
+            });
+
+            if (response.ok) {
+                const mensagem = formatarMensagemWhatsApp();
+                const mensagemCodificada = encodeURIComponent(mensagem);
+                const numeroWhatsApp = '558399016170';
+
+                window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemCodificada}`, '_blank');
+            } else {
+                alert('Erro ao registrar a venda. Faça login novamente ou tente mais tarde.');
+            }
+        } catch (error) {
+            console.error('Erro ao enviar venda:', error);
+            alert('Erro de conexão. Verifique sua internet.');
+        }
     }
 
-    // Formata a mensagem para o WhatsApp
+
     function formatarMensagemWhatsApp() {
         let mensagem = '🛍️ *PEDIDO - RH KOSMETIC* 🛍️\n\n';
         mensagem += 'Olá, gostaria de comprar os seguintes produtos:\n\n';

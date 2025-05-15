@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Painel Administrativo - Vendas Pendentes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #28a745;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Vendas</h1>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Usuário_ID</th>
+      <th>Usuário_Nome</th>
+      <th>Itens</th>
+      <th>Valor Total</th>
+      <th>Status</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody id="vendas-tbody">
+    <!-- Vendas serão carregadas aqui pelo JS -->
+    </tbody>
+  </table>
+</div>
+
+<script>
+  async function confirmarVenda(id, botao) {
+    try {
+      const response = await fetch(`/${id}/confirmar`, { method: 'POST' });
+      if (!response.ok) throw new Error("Erro ao confirmar venda");
+
+      botao.textContent = "Cancelar";
+      botao.style.backgroundColor = "#dc3545"; // vermelho
+      botao.onclick = () => cancelarVenda(id, botao);
+
+      // Atualiza status na linha da tabela
+      botao.closest('tr').querySelector('td:nth-child(6)').textContent = 'Confirmada';
+    } catch (err) {
+      console.error("Erro ao confirmar venda:", err);
+      alert("Erro ao confirmar venda");
+    }
+  }
+
+  async function cancelarVenda(id, botao) {
+    try {
+      const response = await fetch(`/${id}/cancelar`, { method: 'POST' });
+      if (!response.ok) throw new Error("Erro ao cancelar venda");
+
+      botao.textContent = "Confirmar";
+      botao.style.backgroundColor = "#28a745"; // verde
+      botao.onclick = () => confirmarVenda(id, botao);
+
+      botao.closest('tr').querySelector('td:nth-child(6)').textContent = 'Pendente';
+    } catch (err) {
+      console.error("Erro ao cancelar venda:", err);
+      alert("Erro ao cancelar venda");
+    }
+  }
+  document.addEventListener('DOMContentLoaded', async () => {
+    const tbody = document.getElementById('vendas-tbody');
+
+    try {
+      const response = await fetch('/pendentes'); // endpoint correto
+      if (!response.ok) throw new Error("Erro ao carregar vendas: " + response.status);
+
+      const vendas = await response.json();
+      console.log("Vendas carregadas:", vendas);
+
+      tbody.innerHTML = vendas.map(venda => {
+        // Calcula valor total somando itens
+        const valorTotal = venda.itens.reduce((sum, item) => sum + Number(item.precoUnitario) * item.quantidade, 0);
+
+        return `
+        <tr data-id="${venda.id}">
+          <td>${venda.id}</td>
+          <td>${venda.usuarioId || 'Desconhecido'}</td>
+          <td>${venda.usuario || 'Desconhecido'}</td>
+          <td>
+            ${venda.itens.map(i => `${i.nomeProduto} x${i.quantidade}`).join('<br>')}
+          </td>
+          <td>R$ ${valorTotal.toFixed(2)}</td>
+          <td>${venda.confirmada ? 'Confirmada' : 'Pendente'}</td>
+          <td>
+            ${venda.confirmada ? '' : `<button onclick="confirmarVenda(${venda.id}, this)">Confirmar</button>`}
+          </td>
+        </tr>
+      `;
+      }).join('');
+    } catch (error) {
+      console.error('Erro ao carregar vendas:', error);
+      tbody.innerHTML = `<tr><td colspan="6">Erro ao carregar vendas. Veja o console.</td></tr>`;
+    }
+  });
+
+</script>
+</body>
+</html>
