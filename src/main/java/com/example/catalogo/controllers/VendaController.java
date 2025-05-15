@@ -64,16 +64,6 @@ public class VendaController {
         }
     }
 
-    @GetMapping("/confirmadas")
-    public ResponseEntity<List<VendaDTO>> listarVendasConfirmadas() {
-        return ResponseEntity.ok(vendaService.listarVendasConfirmadasDTO());
-    }
-
-    @GetMapping("/pendentes")
-    public ResponseEntity<List<VendaDTO>> listarVendasPendentes() {
-        return ResponseEntity.ok(vendaService.listarVendasPendentesDTO());
-    }
-
     @PostMapping("/{id}/cancelar")
     public ResponseEntity<Void> cancelarVenda(@PathVariable Long id) {
         try {
@@ -82,5 +72,12 @@ public class VendaController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/todas")
+    public ResponseEntity<List<VendaDTO>> listarTodasVendas() {
+        List<VendaDTO> todas = vendaService.listarVendasPendentesDTO();
+        todas.addAll(vendaService.listarVendasConfirmadasDTO());
+        return ResponseEntity.ok(todas);
     }
 }

@@ -34,15 +34,35 @@
     }
     button {
       padding: 6px 12px;
+      width: 90px; /* largura fixa igual para todos */
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      background-color: #28a745;
       color: white;
       transition: background-color 0.3s;
+      text-align: center;
+      box-sizing: border-box;
     }
-    button:hover {
+    button.confirmar {
+      background-color: #28a745; /* verde */
+      margin-right: 7px; /* espaço entre botões */
+    }
+    button.confirmar:hover {
       background-color: #1e7e34;
+    }
+    button.cancelar {
+      background-color: #dc3545; /* vermelho */
+      margin-right: 7px; /* espaço entre botões */
+    }
+    button.cancelar:hover {
+      background-color: #a71d2a;
+    }
+    button.apagar {
+      background-color: #dc3545; /* vermelho */
+      margin-right: 7px; /* espaço entre botões */
+    }
+    button.apagar:hover {
+      background-color: #a71d2a;
     }
   </style>
 </head>
@@ -67,7 +87,6 @@
     </tbody>
   </table>
 </div>
-
 <script>
   async function confirmarVenda(id, botao) {
     try {
@@ -75,10 +94,10 @@
       if (!response.ok) throw new Error("Erro ao confirmar venda");
 
       botao.textContent = "Cancelar";
-      botao.style.backgroundColor = "#dc3545"; // vermelho
+      botao.classList.remove('confirmar');
+      botao.classList.add('cancelar');
       botao.onclick = () => cancelarVenda(id, botao);
 
-      // Atualiza status na linha da tabela
       botao.closest('tr').querySelector('td:nth-child(6)').textContent = 'Confirmada';
     } catch (err) {
       console.error("Erro ao confirmar venda:", err);
@@ -92,7 +111,8 @@
       if (!response.ok) throw new Error("Erro ao cancelar venda");
 
       botao.textContent = "Confirmar";
-      botao.style.backgroundColor = "#28a745"; // verde
+      botao.classList.remove('cancelar');
+      botao.classList.add('confirmar');
       botao.onclick = () => confirmarVenda(id, botao);
 
       botao.closest('tr').querySelector('td:nth-child(6)').textContent = 'Pendente';
@@ -101,42 +121,63 @@
       alert("Erro ao cancelar venda");
     }
   }
+
+  async function apagarVenda(id) {
+    if (!confirm("Deseja realmente apagar essa venda?")) return;
+
+    try {
+      const response = await fetch(`/${id}`, { method: 'DELETE' });
+      if (!response.ok) throw new Error("Erro ao apagar venda");
+
+      document.querySelector(`tr[data-id="${id}"]`).remove();
+
+    } catch (err) {
+      console.error("Erro ao apagar venda:", err);
+      alert("Erro ao apagar venda");
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', async () => {
     const tbody = document.getElementById('vendas-tbody');
 
     try {
-      const response = await fetch('/pendentes'); // endpoint correto
+      const response = await fetch('/todas');
       if (!response.ok) throw new Error("Erro ao carregar vendas: " + response.status);
 
       const vendas = await response.json();
       console.log("Vendas carregadas:", vendas);
 
       tbody.innerHTML = vendas.map(venda => {
-        // Calcula valor total somando itens
         const valorTotal = venda.itens.reduce((sum, item) => sum + Number(item.precoUnitario) * item.quantidade, 0);
 
+        // Se venda confirmada, mostrar botão Cancelar, se pendente botão Confirmar
+        const botaoStatus = venda.confirmada
+                ? `<button class="cancelar" onclick="cancelarVenda(${venda.id}, this)">Cancelar</button>`
+                : `<button class="confirmar" onclick="confirmarVenda(${venda.id}, this)">Confirmar</button>`;
+
+        const botaoApagar = `<button class="apagar" onclick="apagarVenda(${venda.id})">Apagar</button>`;
+
         return `
-        <tr data-id="${venda.id}">
-          <td>${venda.id}</td>
-          <td>${venda.usuarioId || 'Desconhecido'}</td>
-          <td>${venda.usuario || 'Desconhecido'}</td>
-          <td>
-            ${venda.itens.map(i => `${i.nomeProduto} x${i.quantidade}`).join('<br>')}
-          </td>
-          <td>R$ ${valorTotal.toFixed(2)}</td>
-          <td>${venda.confirmada ? 'Confirmada' : 'Pendente'}</td>
-          <td>
-            ${venda.confirmada ? '' : `<button onclick="confirmarVenda(${venda.id}, this)">Confirmar</button>`}
-          </td>
-        </tr>
-      `;
+          <tr data-id="${venda.id}">
+            <td>${venda.id}</td>
+            <td>${venda.usuarioId || 'Desconhecido'}</td>
+            <td>${venda.usuario || 'Desconhecido'}</td>
+            <td>${venda.itens.map(i => `${i.nomeProduto} x${i.quantidade}`).join('<br>')}</td>
+            <td>R$ ${valorTotal.toFixed(2)}</td>
+            <td>${venda.confirmada ? 'Confirmada' : 'Pendente'}</td>
+            <td>
+              ${botaoStatus}
+              ${botaoApagar}
+            </td>
+          </tr>
+        `;
       }).join('');
     } catch (error) {
       console.error('Erro ao carregar vendas:', error);
-      tbody.innerHTML = `<tr><td colspan="6">Erro ao carregar vendas. Veja o console.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7">Erro ao carregar vendas. Veja o console.</td></tr>`;
     }
   });
-
 </script>
+
 </body>
 </html>
