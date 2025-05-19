@@ -1,24 +1,112 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hidratantes</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="shortcut icon" href="imagens/logo.png" type="image/x-icon">
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Painel Admin</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="shortcut icon" href="imagens/logo.png" type="image/x-icon" />
     <style>
-      body {
-        text-align: center;
-      }
-    </style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 40px;
+            margin: 0; /* Remover margens padrão do body */
+        }
 
+        header {
+            width: 100%;
+            background-color: #ccc; /* cinza claro, pode ajustar a cor */
+            padding: 20px 0; /* Aumentei o padding para melhor espaçamento */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px; /* espaço entre logo e texto */
+            box-sizing: border-box;
+            position: relative;
+            left: -40px; /* Compensa o padding do body */
+            width: calc(100% + 80px); /* Compensa o padding do body em ambos os lados */
+            padding-left: 40px; /* Adiciona padding à esquerda para compensar */
+            margin-top: -60px; /* Remove o espaço acima do header */
+        }
+
+        header .logo {
+            height: 50px; /* Reduzi um pouco o tamanho para ficar mais proporcional */
+            width: auto;
+        }
+
+        header .text {
+            font-size: 28px; /* Aumentei o tamanho da fonte */
+            font-weight: bold;
+            color: #333;
+            user-select: none;
+            margin: 0; /* Remove margens padrão */
+            line-height: 1; /* Garante que o texto não tenha altura extra */
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+            color: #333;
+            margin-top: 40px; /* Adiciona espaço acima do título */
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* espaço entre botões */
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0,123,255,0.3);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+            box-shadow: 0 6px 12px rgba(0,86,179,0.5);
+        }
+
+        .btn:active {
+            background-color: #004085;
+            box-shadow: 0 3px 6px rgba(0,64,133,0.7);
+            transform: translateY(1px);
+        }
+    </style>
 </head>
 <body>
-  <h1>Painel Administrativo</h1>
-  <a href="/produtos.html">Gerenciar Produtos</a>
-  <a href="/hidratantes-admin.html">Gerenciar Hidratantes</a>
-  <a href="/index.html">Voltar para o site</a>
-  <a href="/vendas-admin.html">Gerenciar Vendas</a>
+<header>
+    <div class="header-content">
+        <img src="imagens/logo.png" alt="Logo" class="logo">
+        <span class="text">RH Kosmetic</span>
+    </div>
+</header>
+
+<h1>Painel Administrativo</h1>
+
+<div class="btn-container">
+    <a class="btn" href="/produtos.html">Gerenciar Produtos</a>
+    <a class="btn" href="/hidratantes-admin.html">Gerenciar Hidratantes</a>
+    <a class="btn" href="/index.html">Voltar para o site</a>
+    <a class="btn" href="/vendas-admin.html">Gerenciar Vendas</a>
+</div>
 </body>
 </html>

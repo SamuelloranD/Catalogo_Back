@@ -108,5 +108,10 @@ public class VendaService {
         venda.setConfirmada(false);
         vendaRepository.save(venda);
     }
+
+    public List<Venda> buscarVendasConfirmadasNoPeriodo(LocalDateTime inicio, LocalDateTime fim) {
+        return vendaRepository.findByConfirmadaTrueAndDataHoraBetween(inicio, fim);
+    }
+
 }
 

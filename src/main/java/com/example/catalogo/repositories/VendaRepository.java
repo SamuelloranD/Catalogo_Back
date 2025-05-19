@@ -8,5 +8,6 @@ import java.util.List;
 public interface VendaRepository extends JpaRepository<Venda, Long> {
     List<Venda> findByConfirmadaTrue();
     List<Venda> findByConfirmadaFalse();
+    List<Venda> findByConfirmadaTrueAndDataHoraBetween(java.time.LocalDateTime inicio, java.time.LocalDateTime fim);
 }
 

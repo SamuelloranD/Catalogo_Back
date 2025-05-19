@@ -51,11 +51,11 @@
       background-color: #1e7e34;
     }
     button.cancelar {
-      background-color: #dc3545; /* vermelho */
+      background-color: darkorange; /* vermelho */
       margin-right: 7px; /* espaço entre botões */
     }
     button.cancelar:hover {
-      background-color: #a71d2a;
+      background-color: darkorange;
     }
     button.apagar {
       background-color: #dc3545; /* vermelho */
@@ -64,11 +64,49 @@
     button.apagar:hover {
       background-color: #a71d2a;
     }
+
+    #btn-gerar-relatorio {
+      display: inline-flex;          /* flex container inline */
+      align-items: center;           /* verticalmente centralizado */
+      justify-content: center;       /* horizontalmente centralizado */
+      padding: 12px 40px;
+      font-size: 18px;
+      font-weight: 600;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,123,255,0.3);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      white-space: nowrap;
+      min-width: 220px;
+      text-align: center;            /* fallback */
+    }
+
+    #btn-gerar-relatorio:hover {
+      background-color: #0056b3;
+      box-shadow: 0 6px 12px rgba(0,86,179,0.5);
+    }
+
+    #btn-gerar-relatorio:active {
+      background-color: #004085;
+      box-shadow: 0 3px 6px rgba(0,64,133,0.7);
+      transform: translateY(1px);
+    }
+
+
   </style>
 </head>
 <body>
 <div class="container">
-  <h1>Vendas</h1>
+  <h1>Gerenciamento de Vendas</h1>
+
+  <!-- Botão para gerar o relatório -->
+  <div style="text-align: center; margin-bottom: 15px;">
+    <button id="btn-gerar-relatorio">Gerar Relatório PDF</button>
+  </div>
+
 
   <table>
     <thead>
@@ -177,6 +215,32 @@
       tbody.innerHTML = `<tr><td colspan="7">Erro ao carregar vendas. Veja o console.</td></tr>`;
     }
   });
+
+  document.getElementById('btn-gerar-relatorio').addEventListener('click', async () => {
+    try {
+      const response = await fetch('/relatorios/vendas/pdf');
+      if (!response.ok) throw new Error('Erro ao gerar relatório');
+
+      const blob = await response.blob(); // recebe o PDF como Blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Cria um link temporário para download
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'relatorio_vendas.pdf';
+      document.body.appendChild(a);
+      a.click();
+
+      // Remove o link temporário e libera o objeto URL
+      a.remove();
+      window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+      console.error('Erro ao baixar relatório:', error);
+      alert('Erro ao gerar o relatório PDF');
+    }
+  });
+
 </script>
 
 </body>
