@@ -6,7 +6,6 @@ import com.example.catalogo.models.Venda;
 import com.example.catalogo.services.JwtService;
 import com.example.catalogo.services.UsuarioService;
 import com.example.catalogo.services.VendaService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,4 +79,15 @@ public class VendaController {
         todas.addAll(vendaService.listarVendasConfirmadasDTO());
         return ResponseEntity.ok(todas);
     }
+
+    @DeleteMapping("/{id}/apagar")
+    public ResponseEntity<Void> apagarVenda(@PathVariable Long id) {
+        try {
+            vendaService.apagarVenda(id);
+            return ResponseEntity.noContent().build(); // 204
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

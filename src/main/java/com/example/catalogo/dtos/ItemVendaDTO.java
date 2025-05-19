@@ -1,4 +1,3 @@
-// src/main/java/com/example/catalogo/dto/ItemVendaDTO.java
 package com.example.catalogo.dtos;
 
 import lombok.Data;

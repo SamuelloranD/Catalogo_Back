@@ -22,7 +22,5 @@ public class ItemVenda {
 
     @ManyToOne
     private Venda venda;
-
-    // Getters, Setters, Construtores
 }
 

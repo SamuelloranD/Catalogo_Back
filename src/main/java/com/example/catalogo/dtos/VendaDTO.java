@@ -13,7 +13,6 @@ public class VendaDTO {
     private Boolean confirmada;
     private List<ItemVendaDTO> itens;
 
-    // Construtor corrigido: recebe todos os campos e atribui
     public VendaDTO(Long id, Long usuarioId, String usuario, LocalDateTime dataHora, Boolean confirmada, List<ItemVendaDTO> itens) {
         this.id = id;
         this.usuarioId = usuarioId;

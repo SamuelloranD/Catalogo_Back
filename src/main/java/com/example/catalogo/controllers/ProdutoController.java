@@ -121,7 +121,6 @@ public class ProdutoController {
                 produto.setCategoria(validarCategoria((String) data.get("categoria")));
                 produto.setImagemUrl("/imagens/produtos/" + data.get("imagem"));
 
-                // Remova esta linha se não for usar o campo destaque
                 // produto.setDestaque(Boolean.TRUE.equals(data.get("destaque")));
 
                 return produto;

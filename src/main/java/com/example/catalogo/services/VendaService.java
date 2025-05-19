@@ -10,9 +10,7 @@ import com.example.catalogo.repositories.UsuarioRepository;
 import com.example.catalogo.repositories.VendaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -111,6 +109,13 @@ public class VendaService {
 
     public List<Venda> buscarVendasConfirmadasNoPeriodo(LocalDateTime inicio, LocalDateTime fim) {
         return vendaRepository.findByConfirmadaTrueAndDataHoraBetween(inicio, fim);
+    }
+
+    public void apagarVenda(Long id) {
+        if (!vendaRepository.existsById(id)) {
+            throw new RuntimeException("Venda não encontrada");
+        }
+        vendaRepository.deleteById(id);
     }
 
 }

@@ -164,7 +164,7 @@
     if (!confirm("Deseja realmente apagar essa venda?")) return;
 
     try {
-      const response = await fetch(`/${id}`, { method: 'DELETE' });
+      const response = await fetch(`/${id}/apagar`, { method: 'DELETE' });
       if (!response.ok) throw new Error("Erro ao apagar venda");
 
       document.querySelector(`tr[data-id="${id}"]`).remove();
