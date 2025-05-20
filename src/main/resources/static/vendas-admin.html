@@ -9,11 +9,50 @@
       font-family: Arial, sans-serif;
       background-color: #f9f9f9;
       margin: 0;
-      padding: 20px;
+      padding: 40px;
+      margin: 0; /* Remover margens padrão do body */
+    }
+    header {
+      width: 100%;
+      background-color: #ccc; /* cinza claro, pode ajustar a cor */
+      padding: 20px 0; /* Aumentei o padding para melhor espaçamento */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px; /* espaço entre logo e texto */
+      box-sizing: border-box;
+      position: relative;
+      left: -40px; /* Compensa o padding do body */
+      width: calc(100% + 80px); /* Compensa o padding do body em ambos os lados */
+      padding-left: 40px; /* Adiciona padding à esquerda para compensar */
+      margin-top: -60px; /* Remove o espaço acima do header */
+    }
+
+    header .logo {
+      height: 50px; /* Reduzi um pouco o tamanho para ficar mais proporcional */
+      width: auto;
+    }
+
+    header .text {
+      font-size: 28px; /* Aumentei o tamanho da fonte */
+      font-weight: bold;
+      color: #333;
+      user-select: none;
+      margin: 0; /* Remove margens padrão */
+      line-height: 1; /* Garante que o texto não tenha altura extra */
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
     }
     h1 {
       text-align: center;
+      margin-bottom: 40px;
       color: #333;
+      margin-top: 40px; /* Adiciona espaço acima do título */
     }
     .container {
       max-width: 900px;
@@ -100,6 +139,14 @@
 </head>
 <body>
 <div class="container">
+
+  <header>
+    <div class="header-content">
+      <img src="imagens/logo.png" alt="Logo" class="logo">
+      <span class="text">RH Kosmetic</span>
+    </div>
+  </header>
+
   <h1>Gerenciamento de Vendas</h1>
 
   <!-- Botão para gerar o relatório -->
@@ -114,6 +161,7 @@
       <th>ID</th>
       <th>Usuário_ID</th>
       <th>Usuário_Nome</th>
+      <th>Data</th>
       <th>Itens</th>
       <th>Valor Total</th>
       <th>Status</th>
@@ -200,6 +248,7 @@
             <td>${venda.id}</td>
             <td>${venda.usuarioId || 'Desconhecido'}</td>
             <td>${venda.usuario || 'Desconhecido'}</td>
+            <td>${venda.dataHora ? new Date(venda.dataHora).toISOString().split('T')[0] : 'Desconhecido'}</td>
             <td>${venda.itens.map(i => `${i.nomeProduto} x${i.quantidade}`).join('<br>')}</td>
             <td>R$ ${valorTotal.toFixed(2)}</td>
             <td>${venda.confirmada ? 'Confirmada' : 'Pendente'}</td>

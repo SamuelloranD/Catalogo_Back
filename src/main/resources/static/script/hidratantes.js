@@ -71,19 +71,7 @@ function adicionarHidratanteAoCarrinho(hidratanteId) {
         categoria: 'hidratante'
     };
 
-    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-    const itemExistente = carrinho.find(item =>
-        item.id === produto.id && item.volume === produto.volume
-    );
-
-    if (itemExistente) {
-        itemExistente.quantidade++;
-    } else {
-        carrinho.push(produto);
-    }
-
-    localStorage.setItem('carrinho', JSON.stringify(carrinho));
-    atualizarContadorCarrinho();
+    adicionarAoCarrinho(produto); // <-- usa a função genérica do carrinho.js
 
     // Feedback visual
     const btn = produtoElement.querySelector('.add-to-cart');
@@ -92,6 +80,7 @@ function adicionarHidratanteAoCarrinho(hidratanteId) {
         btn.textContent = 'Adicionar ao Carrinho';
     }, 2000);
 }
+
 
 // Reutiliza as mesmas funções auxiliares dos perfumes
 function atualizarContadorCarrinho() {

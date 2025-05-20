@@ -148,3 +148,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return mensagem;
     }
 });
+window.adicionarAoCarrinho = function(produto) {
+    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+    const itemExistente = carrinho.find(item =>
+        item.id === produto.id && item.volume === produto.volume
+    );
+
+    if (itemExistente) {
+        itemExistente.quantidade++;
+    } else {
+        carrinho.push(produto);
+    }
+
+    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+    atualizarContadorCarrinho();
+};

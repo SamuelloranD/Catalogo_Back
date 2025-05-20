@@ -207,6 +207,8 @@ function configurarLogin() {
             if (isLoggedIn) {
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('admin');
+                localStorage.removeItem('carrinho');
+                atualizarContadorCarrinho()
                 window.location.href = 'index.html';
             } else {
                 window.location.href = 'login.html';
