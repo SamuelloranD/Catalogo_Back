@@ -32,7 +32,7 @@ async function carregarProdutosPorCategoria(categoria) {
         // Atualiza o título da seção se necessário
         const tituloSecao = document.querySelector('#masculinos h2, #femininos h2');
         if (tituloSecao) {
-            tituloSecao.textContent = categoriaFormatada;
+            tituloSecao.textContent = `Perfumes ${categoriaFormatada}s`;;
         }
 
     } catch (error) {

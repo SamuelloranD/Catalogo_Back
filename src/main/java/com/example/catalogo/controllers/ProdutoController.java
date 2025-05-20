@@ -66,7 +66,7 @@ public class ProdutoController {
     public ResponseEntity<Produto> atualizarProduto(
             @PathVariable Long id,
             @RequestParam String nome,
-            @RequestParam String descricao,
+            @RequestParam(required = false) String descricao,
             @RequestParam Double preco55ml,
             @RequestParam Double preco100ml,
             @RequestParam String codigo,

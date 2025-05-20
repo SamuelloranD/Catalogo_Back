@@ -60,36 +60,36 @@
 
         .btn-container {
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px; /* espaço entre as linhas */
+        }
+
+        /* Botão de cima: verde */
+        .btn-container .btn.voltar {
+            background-color: #28a745; /* verde */
+            box-shadow: 0 4px 8px rgba(40,167,69,0.3);
+        }
+
+        .btn-container .btn.voltar:hover {
+            background-color: #218838;
+            box-shadow: 0 6px 12px rgba(33,136,56,0.5);
+        }
+
+        .btn-container .btn.voltar:active {
+            background-color: #1e7e34;
+            box-shadow: 0 3px 6px rgba(30,126,52,0.7);
+            transform: translateY(1px);
+        }
+
+        /* Container dos 3 botões de baixo em linha */
+        .bottom-buttons {
+            display: flex;
             justify-content: center;
             gap: 20px; /* espaço entre botões */
             flex-wrap: wrap;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #007BFF;
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 6px;
-            box-shadow: 0 4px 8px rgba(0,123,255,0.3);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .btn:hover {
-            background-color: #0056b3;
-            box-shadow: 0 6px 12px rgba(0,86,179,0.5);
-        }
-
-        .btn:active {
-            background-color: #004085;
-            box-shadow: 0 3px 6px rgba(0,64,133,0.7);
-            transform: translateY(1px);
-        }
     </style>
 </head>
 <body>
@@ -103,10 +103,14 @@
 <h1>Painel Administrativo</h1>
 
 <div class="btn-container">
-    <a class="btn" href="/produtos.html">Gerenciar Produtos</a>
-    <a class="btn" href="/hidratantes-admin.html">Gerenciar Hidratantes</a>
-    <a class="btn" href="/index.html">Voltar para o site</a>
-    <a class="btn" href="/vendas-admin.html">Gerenciar Vendas</a>
+    <a class="btn voltar" href="/index.html">Voltar para o site</a>
+
+    <div class="bottom-buttons">
+        <a class="btn" href="/produtos.html">Gerenciar Perfumes</a>
+        <a class="btn" href="/hidratantes-admin.html">Gerenciar Hidratantes</a>
+        <a class="btn" href="/vendas-admin.html">Gerenciar Vendas</a>
+    </div>
 </div>
+
 </body>
 </html>
