@@ -11,21 +11,21 @@
       margin: 0;
       padding: 40px;
       margin: 0; /* Remover margens padrão do body */
+      padding-top: 80px;
     }
     header {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      background-color: #ccc; /* cinza claro, pode ajustar a cor */
-      padding: 20px 0; /* Aumentei o padding para melhor espaçamento */
+      background-color: #ccc;
+      padding: 20px 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 15px; /* espaço entre logo e texto */
+      gap: 15px;
       box-sizing: border-box;
-      position: relative;
-      left: -40px; /* Compensa o padding do body */
-      width: calc(100% + 80px); /* Compensa o padding do body em ambos os lados */
-      padding-left: 40px; /* Adiciona padding à esquerda para compensar */
-      margin-top: -60px; /* Remove o espaço acima do header */
+      z-index: 1000; /* garantir que fique acima */
     }
 
     header .logo {

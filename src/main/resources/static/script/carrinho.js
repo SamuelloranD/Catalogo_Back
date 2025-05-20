@@ -4,6 +4,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalElement = document.getElementById('total');
 
     renderizarCarrinho();
+    atualizarContadorCarrinho();
+
+    function atualizarContadorCarrinho() {
+        const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+        const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
+        const contador = document.querySelector('.carrinho-count');
+
+        if (contador) {
+            contador.textContent = totalItens;
+            contador.style.display = totalItens > 0 ? 'block' : 'none';
+        }
+    }
 
     function renderizarCarrinho() {
         if (carrinho.length === 0) {
@@ -31,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
 
         atualizarTotal();
+        atualizarContadorCarrinho();
     }
 
     function atualizarTotal() {
@@ -43,15 +56,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     container.addEventListener('click', (e) => {
+        console.log('Clique detectado:', e.target);
+
         if (e.target.classList.contains('btn-quantidade') || e.target.closest('.btn-quantidade')) {
             const button = e.target.classList.contains('btn-quantidade') ? e.target : e.target.closest('.btn-quantidade');
             const id = button.dataset.id;
             const volume = button.dataset.volume;
-            const item = carrinho.find(i => i.id === id && i.volume === volume);
+            // Corrigido para comparar strings e evitar undefined
+            const item = carrinho.find(i => String(i.id) === id && String(i.volume) === volume);
+
+            if (!item) {
+                console.warn('Item não encontrado no carrinho:', id, volume);
+                return;
+            }
 
             if (button.textContent === '+') {
                 item.quantidade++;
-            } else if (item.quantidade > 1) {
+            } else if (button.textContent === '-' && item.quantidade > 1) {
                 item.quantidade--;
             }
 
@@ -63,11 +84,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const button = e.target.classList.contains('btn-remover') ? e.target : e.target.closest('.btn-remover');
             const id = button.dataset.id;
             const volume = button.dataset.volume;
-            const index = carrinho.findIndex(i => i.id === id && i.volume === volume);
+            const index = carrinho.findIndex(i => String(i.id) === id && String(i.volume) === volume);
 
-            carrinho.splice(index, 1);
-            salvarCarrinho();
-            renderizarCarrinho();
+            if (index !== -1) {
+                carrinho.splice(index, 1);
+                salvarCarrinho();
+                renderizarCarrinho();
+            }
         }
     });
 
@@ -94,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const token = localStorage.getItem('token');
-            console.log("Token JWT:", token); // <-- AQUI, dentro do try e ANTES do fetch
+            console.log("Token JWT:", token);
 
             if (!token) {
                 alert("Você precisa estar logado para finalizar a compra.");
@@ -116,6 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const numeroWhatsApp = '558399016170';
 
                 window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemCodificada}`, '_blank');
+                localStorage.removeItem('carrinho');
+                atualizarContadorCarrinho();
+                renderizarCarrinho();
             } else {
                 alert('Erro ao registrar a venda. Faça login novamente ou tente mais tarde.');
             }
@@ -124,7 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Erro de conexão. Verifique sua internet.');
         }
     }
-
 
     function formatarMensagemWhatsApp() {
         let mensagem = '🛍️ *PEDIDO - RH KOSMETIC* 🛍️\n\n';
@@ -148,11 +173,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return mensagem;
     }
 });
+
 window.adicionarAoCarrinho = function(produto) {
     let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
 
     const itemExistente = carrinho.find(item =>
-        item.id === produto.id && item.volume === produto.volume
+        String(item.id) === String(produto.id) && String(item.volume) === String(produto.volume)
     );
 
     if (itemExistente) {
@@ -162,5 +188,11 @@ window.adicionarAoCarrinho = function(produto) {
     }
 
     localStorage.setItem('carrinho', JSON.stringify(carrinho));
-    atualizarContadorCarrinho();
+    // Atualiza contador no header
+    const contador = document.querySelector('.carrinho-count');
+    if (contador) {
+        const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
+        contador.textContent = totalItens;
+        contador.style.display = totalItens > 0 ? 'block' : 'none';
+    }
 };
