@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // Identifica qual página está sendo acessada
     const path = window.location.pathname;
 
     if (path.includes('masculino100.html')) {
@@ -10,12 +9,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         await carregarTodosProdutos();
     }
 
-    // Configurações de login e carrinho
     configurarLogin();
     atualizarContadorCarrinho();
 });
 
-// Função para carregar produtos por categoria
 async function carregarProdutosPorCategoria(categoria) {
     const container = document.getElementById('produtos');
     const categoriaFormatada = categoria.charAt(0).toUpperCase() + categoria.slice(1);
@@ -29,7 +26,6 @@ async function carregarProdutosPorCategoria(categoria) {
 
         renderizarProdutos(produtos);
 
-        // Atualiza o título da seção se necessário
         const tituloSecao = document.querySelector('#masculinos h2, #femininos h2');
         if (tituloSecao) {
             tituloSecao.textContent = `Perfumes ${categoriaFormatada}s`;;
@@ -41,7 +37,6 @@ async function carregarProdutosPorCategoria(categoria) {
     }
 }
 
-// Função para carregar todos os produtos (página principal)
 async function carregarTodosProdutos() {
     const container = document.getElementById('produtos');
 
@@ -54,7 +49,6 @@ async function carregarTodosProdutos() {
 
         renderizarProdutos(produtos.slice(0, 12));
 
-        // Configura o botão "Ver Mais" se houver mais produtos
         const btnVerMais = document.getElementById('ver-mais');
         if (btnVerMais && produtos.length > 12) {
             btnVerMais.style.display = 'block';
@@ -74,7 +68,6 @@ async function carregarTodosProdutos() {
     }
 }
 
-// Função para renderizar os produtos na tela
 function renderizarProdutos(produtos) {
     const container = document.getElementById('produtos');
     container.innerHTML = produtos.map(produto => `
@@ -83,7 +76,6 @@ function renderizarProdutos(produtos) {
             <h3>${produto.nome}</h3>
             <p class="marca">${produto.marca || ''}</p>
             
-            <!-- Seletor de Volume -->
             <div class="volume-selector">
                 <label>Volume:</label>
                 <select onchange="atualizarPreco('preco-${produto.id}', this.value, this)">
@@ -92,7 +84,6 @@ function renderizarProdutos(produtos) {
                 </select>
             </div>
             
-            <!-- Preço (será atualizado pelo seletor) -->
             <p class="preco" id="preco-${produto.id}">R$ ${produto.preco100ml.toFixed(2).replace('.', ',')}</p>
             
             <!-- Botão de Comprar -->
@@ -103,7 +94,6 @@ function renderizarProdutos(produtos) {
     `).join('');
 }
 
-// Funções auxiliares
 function atualizarPreco(idPreco, valor, selectElement) {
     const precoElement = document.getElementById(idPreco);
     if (precoElement) {
@@ -113,16 +103,14 @@ function atualizarPreco(idPreco, valor, selectElement) {
 }
 
 function adicionarAoCarrinho(produtoId) {
-    // Verifica se o usuário está logado (exemplo: token no localStorage)
     const usuarioLogado = localStorage.getItem('isLoggedIn') === 'true';
 
     if (!usuarioLogado) {
         alert("Você precisa estar logado para adicionar itens ao carrinho.");
-        window.location.href = "login.html"; // Redireciona para login
-        return; // Interrompe a função
+        window.location.href = "login.html";
+        return;
     }
 
-    // Se estiver logado, continua o processo original
     const produtoElement = document.querySelector(`.produto[data-id="${produtoId}"]`);
     const selectVolume = produtoElement.querySelector('select');
     const volumeSelecionado = selectVolume.options[selectVolume.selectedIndex].text;
@@ -183,7 +171,6 @@ function mostrarErroCarregamento(container) {
 }
 
 function configurarLogin() {
-    // Configura login/admin (mantido do seu código original)
     const adminParam = new URLSearchParams(window.location.search).get('admin');
     if (adminParam) localStorage.setItem('admin', adminParam);
 
@@ -197,7 +184,6 @@ function configurarLogin() {
         }
     }
 
-    // Controle de login/logout
     const loginLink = document.getElementById('login-logout-link');
     if (loginLink) {
         const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';

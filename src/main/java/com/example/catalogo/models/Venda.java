@@ -28,8 +28,6 @@ public class Venda {
     @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
     private List<ItemVenda> itens = new ArrayList<>();
 
-    // Getters, Setters, Construtores
-
     public Boolean getConfirmada() {
         return confirmada;
     }

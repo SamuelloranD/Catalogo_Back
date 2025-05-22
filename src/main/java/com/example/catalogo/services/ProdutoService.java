@@ -16,22 +16,18 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository repository;
 
-    // Método para listar todos os produtos
     public List<Produto> listarTodos() {
         return repository.findAll();
     }
 
-    // Método para buscar por categoria (novo)
     public List<Produto> buscarPorCategoria(String categoria) {
         return repository.findByCategoria(categoria);
     }
 
-    // Método para salvar novo produto
     public Produto salvar(Produto produto) {
         return repository.save(produto);
     }
 
-    // Método para atualizar produto existente
     public Produto atualizar(Long id, Produto produtoAtualizado) {
         return repository.findById(id)
                 .map(produto -> {
@@ -50,15 +46,12 @@ public class ProdutoService {
                 });
     }
 
-    // Método para deletar produto
     public void deletar(Long id) {
         repository.deleteById(id);
     }
 
-    // Método para importação em massa (novo)
     @Transactional
     public void importarProdutos(List<Produto> produtos) {
-        // Validações adicionais
         for (Produto produto : produtos) {
             if (produto.getPreco100ml() <= produto.getPreco55ml()) {
                 throw new IllegalArgumentException(
@@ -76,7 +69,6 @@ public class ProdutoService {
         repository.saveAll(produtos);
     }
 
-    // Método para upload de imagens
     public String uploadImagem(MultipartFile imagem) throws IOException {
         String diretorio = "src/main/resources/static/imagens/produtos/";
         String nomeArquivo = System.currentTimeMillis() + "_" + imagem.getOriginalFilename();

@@ -178,12 +178,11 @@
         </tr>
         </thead>
         <tbody id="produtos-tbody">
-        <!-- Produtos carregados via JS -->
+        <!-- Produtos -->
         </tbody>
     </table>
 </div>
 
-<!-- Modal de Edição/Criação -->
 <div id="editarModal" class="modal">
     <div class="modal-content">
         <h2 id="modalTitulo">Editar perfume</h2>
@@ -304,7 +303,7 @@
                 imagemPreview.style.display = 'block';
             }
 
-            modal.style.display = 'block'; // Alterado para 'block'
+            modal.style.display = 'block';
         } catch (error) {
             alert('Erro ao carregar produto para edição.');
             console.error(error);
@@ -399,7 +398,6 @@
         }
     }
 
-    // Fechar modal clicando fora do conteúdo
     window.onclick = function(event) {
         if (event.target === modal) {
             fecharModal();

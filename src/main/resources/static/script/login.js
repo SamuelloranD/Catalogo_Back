@@ -5,7 +5,6 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const senha = document.getElementById('senha').value;
     const erroElement = document.getElementById('erro-login');
 
-    // Reset do erro
     erroElement.style.display = 'none';
     erroElement.textContent = '';
 
@@ -15,7 +14,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             headers: {
                 'Content-Type': 'application/json',
             },
-            credentials: 'include', // necessário para enviar cookie da sessão
+            credentials: 'include',
             body: JSON.stringify({ usuario, senha })
         });
 
@@ -23,7 +22,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 
         if (response.ok && data.success) {
             localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('token', data.token); // salva o token JWT
+            localStorage.setItem('token', data.token);
 
             if (data.admin) {
                 localStorage.setItem('admin', 'true');

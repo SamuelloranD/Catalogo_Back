@@ -42,15 +42,12 @@ function renderizarHidratantes(hidratantes) {
             <img src="${hidratante.imagemUrl || 'imagens_hidratantes/sem-imagem.jpg'}" alt="${hidratante.nome}">
             <h3>${hidratante.nome}</h3>
             
-            <!-- Volume fixo (diferente dos perfuses) -->
             <div class="volume-info">
                 <span>${hidratante.volume || '60g'}</span>
             </div>
             
-            <!-- Preço único -->
             <p class="preco">R$ ${hidratante.preco.toFixed(2).replace('.', ',')}</p>
             
-            <!-- Botão de Comprar -->
             <button class="add-to-cart" onclick="adicionarHidratanteAoCarrinho(${hidratante.id})">
                 Adicionar ao Carrinho
             </button>
@@ -71,9 +68,8 @@ function adicionarHidratanteAoCarrinho(hidratanteId) {
         categoria: 'hidratante'
     };
 
-    adicionarAoCarrinho(produto); // <-- usa a função genérica do carrinho.js
+    adicionarAoCarrinho(produto);
 
-    // Feedback visual
     const btn = produtoElement.querySelector('.add-to-cart');
     btn.textContent = '✔ Adicionado';
     setTimeout(() => {
@@ -81,8 +77,6 @@ function adicionarHidratanteAoCarrinho(hidratanteId) {
     }, 2000);
 }
 
-
-// Reutiliza as mesmas funções auxiliares dos perfumes
 function atualizarContadorCarrinho() {
     const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
     const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
@@ -104,7 +98,6 @@ function mostrarErroCarregamento(container) {
 }
 
 function configurarLogin() {
-    // Configuração idêntica à dos perfumes
     const adminParam = new URLSearchParams(window.location.search).get('admin');
     if (adminParam) localStorage.setItem('admin', adminParam);
 

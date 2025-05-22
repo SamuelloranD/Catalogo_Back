@@ -33,10 +33,8 @@ public class VendaService {
         venda.setDataHora(LocalDateTime.now());
         venda.setConfirmada(false);
 
-        // Corrigir os itens
         List<ItemVenda> itensCorrigidos = new ArrayList<>();
         for (ItemVenda item : venda.getItens()) {
-            // Buscar produto completo pelo id
             Produto produto = produtoRepository.findById(item.getProduto().getId())
                     .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + item.getProduto().getId()));
 
@@ -55,7 +53,7 @@ public class VendaService {
         Venda venda = vendaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Venda não encontrada"));
 
-        venda.setConfirmada(true); // Corrigido para usar o boolean
+        venda.setConfirmada(true);
         vendaRepository.save(venda);
     }
 
@@ -69,8 +67,8 @@ public class VendaService {
 
         return new VendaDTO(
                 venda.getId(),
-                venda.getUsuario().getId(),       // Passa o ID do usuário
-                venda.getUsuario().getUsername(), // Passa o username
+                venda.getUsuario().getId(),
+                venda.getUsuario().getUsername(),
                 venda.getDataHora(),
                 venda.getConfirmada(),
                 itensDto

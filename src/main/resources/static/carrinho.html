@@ -4,12 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrinho - RH Kosmetic</title>
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/carrinho.css">
     <link rel="shortcut icon" href="imagens/logo.png" type="image/x-icon">
+    <style>
+        header {
+            margin-top: -10px;
+        }
+        nav {
+            margin-right: 260px;
+        }
+        nav > ul {
+            gap: 25px;
+        }
+        h1 {
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
 <header>
-    <!-- Mesmo header do index.html -->
+    <div class="logo-container">
+        <img src="imagens/logo.png" alt="Logo" class="logo">
+        <span class="text">RH Kosmetic</span>
+    </div>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="masculino100.html" class="dropdown">Perfumes Masculinos</a>
+            </li>
+            <li>
+                <a href="feminino100.html" class="dropdown">Perfumes Femininos</a>
+            </li>
+            <li><a href="hidratantes.html">Hidratantes</a></li>
+
+        </ul>
+    </nav>
 </header>
 
 <main class="carrinho-page">
@@ -19,7 +50,6 @@
 
     <div class="carrinho-total">
         <h3>Total: R$ <span id="total">0.00</span></h3>
-        <!-- Mantenha todo o restante igual e apenas atualize o botão: -->
         <button id="finalizar-compra" class="btn-primario whatsapp-btn">
             <img src="imagens/whatsapp-icon.png" alt="WhatsApp" style="width: 20px; margin-right: 8px;">
             Finalizar Compra via WhatsApp
@@ -28,5 +58,7 @@
 </main>
 
 <script src="script/carrinho.js"></script>
+<script src="script/script.js.js"></script>
+
 </body>
 </html>

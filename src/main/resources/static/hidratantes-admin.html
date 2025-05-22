@@ -150,7 +150,7 @@
         </tr>
         </thead>
         <tbody id="hidratantes-tbody">
-        <!-- Hidratantes serão carregados aqui pelo JS -->
+        <!-- Hidratantes -->
         </tbody>
     </table>
 </div>
@@ -194,12 +194,10 @@
 </div>
 
 <script>
-    // Variável para controle do modal
     let modal = document.getElementById('editarModal');
     let form = document.getElementById('hidratanteForm');
     let modalTitulo = document.getElementById('modalTitulo');
 
-    // Carrega a lista de hidratantes ao abrir a página
     document.addEventListener('DOMContentLoaded', carregarHidratantes);
 
     async function carregarHidratantes() {
@@ -236,7 +234,6 @@
         }
     }
 
-    // Funções do Modal
     function abrirModalEdicao(id) {
         modalTitulo.textContent = 'Editar Hidratante';
         carregarDadosHidratante(id);
@@ -271,7 +268,6 @@
         }
     }
 
-    // Envio do Formulário
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -308,7 +304,6 @@
         }
     });
 
-    // Função de Exclusão
     async function deletarHidratante(id, button) {
         if (!confirm('Tem certeza que deseja excluir este hidratante permanentemente?')) {
             return;

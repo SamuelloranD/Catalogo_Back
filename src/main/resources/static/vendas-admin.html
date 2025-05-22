@@ -10,7 +10,7 @@
       background-color: #f9f9f9;
       margin: 0;
       padding: 40px;
-      margin: 0; /* Remover margens padrão do body */
+      margin: 0;
       padding-top: 80px;
     }
     header {
@@ -25,21 +25,21 @@
       justify-content: center;
       gap: 15px;
       box-sizing: border-box;
-      z-index: 1000; /* garantir que fique acima */
+      z-index: 1000;
     }
 
     header .logo {
-      height: 50px; /* Reduzi um pouco o tamanho para ficar mais proporcional */
+      height: 50px;
       width: auto;
     }
 
     header .text {
-      font-size: 28px; /* Aumentei o tamanho da fonte */
+      font-size: 28px;
       font-weight: bold;
       color: #333;
       user-select: none;
-      margin: 0; /* Remove margens padrão */
-      line-height: 1; /* Garante que o texto não tenha altura extra */
+      margin: 0;
+      line-height: 1;
     }
 
     .header-content {
@@ -52,7 +52,7 @@
       text-align: center;
       margin-bottom: 40px;
       color: #333;
-      margin-top: 40px; /* Adiciona espaço acima do título */
+      margin-top: 40px;
     }
     .container {
       max-width: 900px;
@@ -73,7 +73,7 @@
     }
     button {
       padding: 6px 12px;
-      width: 90px; /* largura fixa igual para todos */
+      width: 90px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
@@ -83,31 +83,31 @@
       box-sizing: border-box;
     }
     button.confirmar {
-      background-color: #28a745; /* verde */
-      margin-right: 7px; /* espaço entre botões */
+      background-color: #28a745;
+      margin-right: 7px;
     }
     button.confirmar:hover {
       background-color: #1e7e34;
     }
     button.cancelar {
-      background-color: darkorange; /* vermelho */
-      margin-right: 7px; /* espaço entre botões */
+      background-color: darkorange;
+      margin-right: 7px;
     }
     button.cancelar:hover {
       background-color: darkorange;
     }
     button.apagar {
-      background-color: #dc3545; /* vermelho */
-      margin-right: 7px; /* espaço entre botões */
+      background-color: #dc3545;
+      margin-right: 7px;
     }
     button.apagar:hover {
       background-color: #a71d2a;
     }
 
     #btn-gerar-relatorio {
-      display: inline-flex;          /* flex container inline */
-      align-items: center;           /* verticalmente centralizado */
-      justify-content: center;       /* horizontalmente centralizado */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       padding: 12px 40px;
       font-size: 18px;
       font-weight: 600;
@@ -120,7 +120,7 @@
       transition: background-color 0.3s ease, box-shadow 0.3s ease;
       white-space: nowrap;
       min-width: 220px;
-      text-align: center;            /* fallback */
+      text-align: center;
     }
 
     #btn-gerar-relatorio:hover {
@@ -149,7 +149,6 @@
 
   <h1>Gerenciamento de Vendas</h1>
 
-  <!-- Botão para gerar o relatório -->
   <div style="text-align: center; margin-bottom: 15px;">
     <button id="btn-gerar-relatorio">Gerar Relatório PDF</button>
   </div>
@@ -169,7 +168,7 @@
     </tr>
     </thead>
     <tbody id="vendas-tbody">
-    <!-- Vendas serão carregadas aqui pelo JS -->
+    <!-- Vendas -->
     </tbody>
   </table>
 </div>
