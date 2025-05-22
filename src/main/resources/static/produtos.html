@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Painel Administrativo - Produtos (Perfumes)</title>
+    <title>Painel Administrativo - Perfumes</title>
     <style>
+        /* CSS BÁSICO PARA O PAINEL ADMINISTRATIVO (manter o mesmo que você já tinha, mas com ajustes) */
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
@@ -64,7 +65,6 @@
             height: auto;
         }
 
-        /* Estilos dos botões de ação - CORRIGIDO */
         .action-btn {
             margin: 0 5px;
             padding: 5px 10px;
@@ -72,7 +72,7 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
-            display: inline-block; /* Adicionado */
+            display: inline-block;
         }
 
         .edit-btn {
@@ -85,14 +85,12 @@
             color: white;
         }
 
-        /* Ajuste para a célula de ações */
         #produtos-tbody td:last-child {
             white-space: nowrap;
         }
 
-        /* Modal Styles - CORRIGIDO (removido display:flex duplicado) */
         .modal {
-            display: none; /* Apenas isso */
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
@@ -174,18 +172,17 @@
             <th>Nome</th>
             <th>Preço 55ml</th>
             <th>Preço 100ml</th>
-            <th>Ações</th>
+            <th>Categoria</th> <th>Ações</th>
         </tr>
         </thead>
         <tbody id="produtos-tbody">
-        <!-- Produtos -->
         </tbody>
     </table>
 </div>
 
 <div id="editarModal" class="modal">
     <div class="modal-content">
-        <h2 id="modalTitulo">Editar perfume</h2>
+        <h2 id="modalTitulo">Editar Perfume</h2>
         <form id="produtoForm" enctype="multipart/form-data">
             <input type="hidden" id="id">
 
@@ -216,7 +213,6 @@
                     <option value="">Selecione...</option>
                     <option value="masculino">Perfume Masculino</option>
                     <option value="feminino">Perfume Feminino</option>
-                    <option value="hidratante">Hidratante</option>
                 </select>
             </div>
 
@@ -228,7 +224,7 @@
 
             <div class="modal-actions">
                 <button type="button" class="btn" onclick="fecharModal()">Cancelar</button>
-                <button type="submit" class="btn">Salvar Produto</button>
+                <button type="submit" class="btn">Salvar Perfume</button>
             </div>
         </form>
     </div>
@@ -237,7 +233,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'none';
-        carregarProdutos();
+        carregarPerfumes(); // Chamar função específica para perfumes
     });
 
     const modal = document.getElementById('editarModal');
@@ -245,67 +241,88 @@
     const modalTitulo = document.getElementById('modalTitulo');
     const imagemPreview = document.getElementById('imagem-preview');
 
-    async function carregarProdutos() {
+    async function carregarPerfumes() { // Renomeado para carregarPerfumes
         const tbody = document.getElementById('produtos-tbody');
-        tbody.innerHTML = '<tr><td colspan="7">Carregando...</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7">Carregando Perfumes...</td></tr>';
 
         try {
-            const response = await fetch('/api/produtos');
+            // MUDANÇA: Buscar TODOS os produtos e FILTRAR no frontend
+            const response = await fetch('/api/novos-produtos');
             if (!response.ok) throw new Error('Erro na API: ' + response.status);
 
-            const produtos = await response.json();
+            const todosProdutos = await response.json();
+            // Filtrar apenas perfumes (masculino e feminino)
+            const perfumes = todosProdutos.filter(p =>
+                p.categoria && (p.categoria.toLowerCase() === 'masculino' || p.categoria.toLowerCase() === 'feminino')
+            );
 
-            tbody.innerHTML = produtos.map(produto =>
-                `<tr data-id="${produto.id}">
-                    <td>${produto.id}</td>
-                    <td><img src="${produto.imagemUrl || 'imagens/sem-imagem.jpg'}" width="50"></td>
-                    <td>${produto.nome}</td>
-                    <td>R$ ${produto.preco55ml.toFixed(2)}</td>
-                    <td>R$ ${produto.preco100ml.toFixed(2)}</td>
-                    <td>
-                        <button class="action-btn edit-btn" onclick="abrirModalEdicao(${produto.id})">Editar</button>
-                        <button class="action-btn delete-btn" onclick="deletarProduto(${produto.id}, this)">Excluir</button>
-                    </td>
-                </tr>`
-            ).join('');
+            tbody.innerHTML = perfumes.map(produto => {
+                const precoDisplay55ml = `R$ ${produto.preco55ml ? produto.preco55ml.toFixed(2).replace('.', ',') : '0,00'}`;
+                const precoDisplay100ml = `R$ ${produto.preco100ml ? produto.preco100ml.toFixed(2).replace('.', ',') : '0,00'}`;
+                const categoriaDisplay = produto.categoria === 'masculino' ? 'Masculino' : 'Feminino';
+
+                return `<tr data-id="${produto.id}">
+                            <td>${produto.id}</td>
+                            <td><img src="${produto.imagemUrl || 'imagens/sem-imagem.jpg'}" width="50"></td>
+                            <td>${produto.nome}</td>
+                            <td>${precoDisplay55ml}</td>
+                            <td>${precoDisplay100ml}</td>
+                            <td>${categoriaDisplay}</td>
+                            <td>
+                                <button class="action-btn edit-btn" onclick="abrirModalEdicao(${produto.id})">Editar</button>
+                                <button class="action-btn delete-btn" onclick="deletarProduto(${produto.id}, this)">Excluir</button>
+                            </td>
+                        </tr>`;
+            }).join('');
         } catch (error) {
-            console.error('Erro ao carregar produtos:', error);
+            console.error('Erro ao carregar perfumes:', error);
             tbody.innerHTML = '<tr><td colspan="7">Erro ao carregar dados. Verifique o console.</td></tr>';
         }
     }
 
     function abrirModalCriacao() {
-        modalTitulo.textContent = 'Adicionar Produto';
+        modalTitulo.textContent = 'Adicionar Perfume';
         form.reset();
         document.getElementById('id').value = '';
+        imagemPreview.src = '';
         imagemPreview.style.display = 'none';
-        modal.style.display = 'block'; // Alterado para 'block'
+        modal.style.display = 'block';
+        // Assegurar que os campos de preço de perfume estão visíveis e requeridos
+        document.getElementById('preco55ml').setAttribute('required', 'true');
+        document.getElementById('preco100ml').setAttribute('required', 'true');
     }
 
     async function abrirModalEdicao(id) {
-        modalTitulo.textContent = 'Editar Produto';
+        modalTitulo.textContent = 'Editar Perfume';
+        imagemPreview.src = '';
         imagemPreview.style.display = 'none';
         try {
-            const response = await fetch(`/api/produtos/${id}`);
+            // MUDANÇA: Endpoint da API
+            const response = await fetch(`/api/novos-produtos/${id}`);
             if (!response.ok) throw new Error('Erro ao buscar produto');
 
             const produto = await response.json();
 
-            document.getElementById('id').value = produto.id;
-            document.getElementById('nome').value = produto.nome;
-            document.getElementById('preco55ml').value = produto.preco55ml;
-            document.getElementById('preco100ml').value = produto.preco100ml;
-            document.getElementById('codigo').value = produto.codigo;
-            document.getElementById('categoria').value = produto.categoria || '';
+            // Verificar se o produto é um perfume antes de preencher o modal
+            if (produto.categoria && (produto.categoria.toLowerCase() === 'masculino' || produto.categoria.toLowerCase() === 'feminino')) {
+                document.getElementById('id').value = produto.id;
+                document.getElementById('nome').value = produto.nome;
+                document.getElementById('preco55ml').value = produto.preco55ml || '';
+                document.getElementById('preco100ml').value = produto.preco100ml || '';
+                document.getElementById('codigo').value = produto.codigo || '';
+                document.getElementById('categoria').value = produto.categoria.toLowerCase() || '';
 
-            if (produto.imagemUrl) {
-                imagemPreview.src = produto.imagemUrl;
-                imagemPreview.style.display = 'block';
+                if (produto.imagemUrl) {
+                    imagemPreview.src = produto.imagemUrl;
+                    imagemPreview.style.display = 'block';
+                }
+                modal.style.display = 'block';
+            } else {
+                alert('Este não é um perfume. Use o painel de Hidratantes para editá-lo.');
+                console.warn('Tentativa de editar produto não-perfume no painel de perfumes. ID:', id, 'Categoria:', produto.categoria);
             }
-
-            modal.style.display = 'block';
         } catch (error) {
-            alert('Erro ao carregar produto para edição.');
+            alert('Erro ao carregar perfume para edição.');
             console.error(error);
         }
     }
@@ -324,6 +341,7 @@
             reader.readAsDataURL(input.files[0]);
         } else {
             imagemPreview.style.display = 'none';
+            imagemPreview.src = '';
         }
     }
 
@@ -335,10 +353,14 @@
         const preco55ml = parseFloat(document.getElementById('preco55ml').value);
         const preco100ml = parseFloat(document.getElementById('preco100ml').value);
         const codigo = document.getElementById('codigo').value.trim();
-        const categoria = document.getElementById('categoria').value;
+        const categoria = document.getElementById('categoria').value; // 'masculino' ou 'feminino'
 
-        if (!nome || !codigo || !categoria || isNaN(preco55ml) || isNaN(preco100ml)) {
-            alert('Preencha todos os campos obrigatórios corretamente.');
+        if (!nome || !codigo || !categoria || isNaN(preco55ml) || preco55ml < 0 || isNaN(preco100ml) || preco100ml < 0) {
+            alert('Preencha todos os campos corretamente (nome, código, categoria, preço 55ml, preço 100ml).');
+            return;
+        }
+        if (categoria.toLowerCase() === 'hidratante') {
+            alert('Por favor, use o painel de Hidratantes para adicionar ou editar Hidratantes.');
             return;
         }
 
@@ -346,8 +368,9 @@
         formData.append('nome', nome);
         formData.append('preco55ml', preco55ml);
         formData.append('preco100ml', preco100ml);
+        // Não enviar o campo 'preco' para o backend, pois é para hidratantes
         formData.append('codigo', codigo);
-        formData.append('categoria', categoria);
+        formData.append('categoria', categoria); // Categoria já será 'masculino' ou 'feminino'
 
         const imagemInput = document.getElementById('imagem');
         if (imagemInput.files && imagemInput.files[0]) {
@@ -357,43 +380,40 @@
         try {
             let response;
             if (id) {
-                response = await fetch(`/api/produtos/${id}`, {
-                    method: 'PUT',
-                    body: formData
-                });
+                response = await fetch(`/api/novos-produtos/${id}`, { method: 'PUT', body: formData });
             } else {
-                response = await fetch('/api/produtos', {
-                    method: 'POST',
-                    body: formData
-                });
+                response = await fetch('/api/novos-produtos', { method: 'POST', body: formData });
             }
 
-            if (!response.ok) throw new Error('Erro na requisição');
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Erro na requisição: ${response.status} - ${errorText}`);
+            }
 
-            alert('Produto salvo com sucesso!');
+            alert('Perfume salvo com sucesso!');
             fecharModal();
-            carregarProdutos();
-
+            carregarPerfumes(); // Recarregar lista de perfumes
         } catch (error) {
-            alert('Erro ao salvar o produto. Veja o console para detalhes.');
+            alert('Erro ao salvar o perfume. Veja o console para detalhes.');
             console.error(error);
         }
     });
 
-    async function deletarProduto(id, btn) {
-        if (!confirm('Deseja realmente excluir este produto?')) return;
+    async function deletarProduto(id, btn) { // Manter nome da função genérico
+        if (!confirm('Deseja realmente excluir este perfume?')) return;
 
         try {
-            const response = await fetch(`/api/produtos/${id}`, {
-                method: 'DELETE'
-            });
+            const response = await fetch(`/api/novos-produtos/${id}`, { method: 'DELETE' });
 
-            if (!response.ok) throw new Error('Erro ao excluir produto');
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Erro ao excluir perfume: ${response.status} - ${errorText}`);
+            }
 
-            alert('Produto excluído com sucesso!');
-            carregarProdutos();
+            alert('Perfume excluído com sucesso!');
+            carregarPerfumes(); // Recarregar lista de perfumes
         } catch (error) {
-            alert('Erro ao excluir produto.');
+            alert('Erro ao excluir perfume.');
             console.error(error);
         }
     }

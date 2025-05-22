@@ -1,6 +1,6 @@
 # Catálogo de Perfumes
 
-Este projeto é um catálogo de perfumes desenvolvido em HTML, CSS, JavaScript e Java com Spring Boot.  
+Este projeto é um catálogo de produtos desenvolvido em HTML, CSS, JavaScript e Java com Spring Boot.  
 Atualmente, estamos dando continuidade ao desenvolvimento, implementando o back-end com integração de banco de dados e funcionalidades como cadastro e login de usuários.
 
 ## Tecnologias utilizadas

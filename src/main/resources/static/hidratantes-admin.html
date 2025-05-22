@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Painel Administrativo - Hidratantes</title>
     <style>
+        /* CSS BÁSICO PARA O PAINEL ADMINISTRATIVO (manter o mesmo que você já tinha, mas com ajustes) */
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
@@ -70,6 +71,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            display: inline-block;
         }
 
         .edit-btn {
@@ -82,7 +84,10 @@
             color: white;
         }
 
-        /* Modal de Edição */
+        #hidratantes-tbody td:last-child {
+            white-space: nowrap;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -92,16 +97,20 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 1000;
-            justify-content: center;
-            align-items: center;
         }
 
         .modal-content {
             background-color: white;
             padding: 20px;
             border-radius: 8px;
-            width: 80%;
+            width: 90%;
             max-width: 500px;
+            max-height: 90vh; /* Para garantir que o modal não seja muito grande */
+            overflow-y: auto; /* Para rolagem se o conteúdo for grande */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .form-group {
@@ -114,11 +123,19 @@
             font-weight: bold;
         }
 
-        .form-group input, .form-group textarea {
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
+        }
+
+        /* Adicionar estilos para a imagem preview no modal de hidratantes */
+        #imagem-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 10px;
+            display: block;
         }
 
         .modal-actions {
@@ -150,12 +167,10 @@
         </tr>
         </thead>
         <tbody id="hidratantes-tbody">
-        <!-- Hidratantes -->
         </tbody>
     </table>
 </div>
 
-<!-- Modal de Edição/Criação -->
 <div id="editarModal" class="modal">
     <div class="modal-content">
         <h2 id="modalTitulo">Editar Hidratante</h2>
@@ -183,7 +198,8 @@
             </div>
             <div class="form-group">
                 <label for="imagem">Imagem:</label>
-                <input type="file" id="imagem" accept="image/*">
+                <input type="file" id="imagem" accept="image/*" onchange="previewImage(this)">
+                <img id="imagem-preview" style="display:none;">
             </div>
             <div class="modal-actions">
                 <button type="button" class="btn" onclick="fecharModal()">Cancelar</button>
@@ -197,15 +213,17 @@
     let modal = document.getElementById('editarModal');
     let form = document.getElementById('hidratanteForm');
     let modalTitulo = document.getElementById('modalTitulo');
+    const imagemPreview = document.getElementById('imagem-preview'); // Adicionado
 
     document.addEventListener('DOMContentLoaded', carregarHidratantes);
 
-    async function carregarHidratantes() {
+    async function carregarHidratantes() { // Renomeado para carregarHidratantes
         const tbody = document.getElementById('hidratantes-tbody');
-        tbody.innerHTML = '<tr><td colspan="7">Carregando...</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7">Carregando Hidratantes...</td></tr>';
 
         try {
-            const response = await fetch('/api/hidratantes');
+            // MUDANÇA: Buscar produtos por categoria 'hidratante'
+            const response = await fetch('/api/novos-produtos?categoria=hidratante');
             if (!response.ok) throw new Error("Erro na API: " + response.status);
 
             const hidratantes = await response.json();
@@ -213,11 +231,10 @@
             tbody.innerHTML = hidratantes.map(hidratante => `
                 <tr data-id="${hidratante.id}">
                     <td>${hidratante.id}</td>
-                    <td><img src="${hidratante.imagemUrl || 'imagens_hidratantes/sem-imagem.jpg'}" width="50"></td>
-                    <td>${hidratante.nome}</td>
-                    <td>${hidratante.volume || '60g'}</td>
-                    <td>R$ ${hidratante.preco.toFixed(2)}</td>
-                    <td>${hidratante.codigo}</td>
+                    <td><img src="${hidratante.imagemUrl || 'imagens/produtos/sem-imagem.jpg'}" width="50"></td> <td>${hidratante.nome}</td>
+                    <td>${hidratante.volume || 'N/A'}</td>
+                    <td>R$ ${hidratante.preco ? hidratante.preco.toFixed(2).replace('.', ',') : '0,00'}</td>
+                    <td>${hidratante.codigo || 'N/A'}</td>
                     <td>
                         <button class="action-btn edit-btn" onclick="abrirModalEdicao(${hidratante.id})">
                             Editar
@@ -237,31 +254,63 @@
     function abrirModalEdicao(id) {
         modalTitulo.textContent = 'Editar Hidratante';
         carregarDadosHidratante(id);
-        modal.style.display = 'flex';
+        modal.style.display = 'block'; // Usar 'block' para consistência
     }
 
     function abrirModalCriacao() {
         modalTitulo.textContent = 'Adicionar Hidratante';
         form.reset();
         document.getElementById('hidratanteId').value = '';
-        modal.style.display = 'flex';
+        imagemPreview.src = ''; // Limpar preview
+        imagemPreview.style.display = 'none';
+        modal.style.display = 'block'; // Usar 'block' para consistência
     }
 
     function fecharModal() {
         modal.style.display = 'none';
     }
 
+    function previewImage(input) { // Adicionada função previewImage
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                imagemPreview.src = e.target.result;
+                imagemPreview.style.display = 'block';
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            imagemPreview.style.display = 'none';
+            imagemPreview.src = '';
+        }
+    }
+
     async function carregarDadosHidratante(id) {
         try {
-            const response = await fetch(`/api/hidratantes/${id}`);
+            // MUDANÇA: Endpoint da API
+            const response = await fetch(`/api/novos-produtos/${id}`);
             const hidratante = await response.json();
 
-            document.getElementById('hidratanteId').value = hidratante.id;
-            document.getElementById('nome').value = hidratante.nome;
-            document.getElementById('descricao').value = hidratante.descricao || '';
-            document.getElementById('preco').value = hidratante.preco;
-            document.getElementById('codigo').value = hidratante.codigo;
-            document.getElementById('volume').value = hidratante.volume || '';
+            // Verificar se o produto é um hidratante antes de preencher o modal
+            if (hidratante.categoria && hidratante.categoria.toLowerCase() === 'hidratante') {
+                document.getElementById('hidratanteId').value = hidratante.id;
+                document.getElementById('nome').value = hidratante.nome;
+                document.getElementById('descricao').value = hidratante.descricao || '';
+                document.getElementById('preco').value = hidratante.preco || ''; // Preencher preço simples
+                document.getElementById('codigo').value = hidratante.codigo || '';
+                document.getElementById('volume').value = hidratante.volume || '';
+
+                if (hidratante.imagemUrl) {
+                    imagemPreview.src = hidratante.imagemUrl;
+                    imagemPreview.style.display = 'block';
+                } else {
+                    imagemPreview.style.display = 'none';
+                    imagemPreview.src = '';
+                }
+                modal.style.display = 'block';
+            } else {
+                alert('Este não é um hidratante. Use o painel de Perfumes para editá-lo.');
+                console.warn('Tentativa de editar produto não-hidratante no painel de hidratantes. ID:', id, 'Categoria:', hidratante.categoria);
+            }
         } catch (error) {
             console.error('Erro ao carregar dados:', error);
             alert('Falha ao carregar hidratante.');
@@ -275,9 +324,13 @@
         const formData = new FormData();
         formData.append('nome', document.getElementById('nome').value);
         formData.append('descricao', document.getElementById('descricao').value);
-        formData.append('preco', document.getElementById('preco').value);
+        formData.append('preco', document.getElementById('preco').value); // Preço simples
         formData.append('codigo', document.getElementById('codigo').value);
         formData.append('volume', document.getElementById('volume').value);
+        formData.append('categoria', 'hidratante'); // Forçar categoria para 'hidratante'
+
+        // Campos de perfume não devem ser enviados para um hidratante (mesmo que nulos)
+        // Certifique-se de que o backend lida com a ausência desses campos para hidratantes
 
         const imagemInput = document.getElementById('imagem');
         if (imagemInput.files[0]) {
@@ -285,7 +338,7 @@
         }
 
         try {
-            const url = id ? `/api/hidratantes/${id}` : '/api/hidratantes';
+            const url = id ? `/api/novos-produtos/${id}` : '/api/novos-produtos'; // MUDANÇA: Endpoint da API
             const method = id ? 'PUT' : 'POST';
 
             const response = await fetch(url, {
@@ -293,7 +346,10 @@
                 body: formData
             });
 
-            if (!response.ok) throw new Error('Erro ao salvar');
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error('Erro ao salvar: ' + response.status + ' - ' + errorText);
+            }
 
             fecharModal();
             carregarHidratantes();
@@ -304,18 +360,18 @@
         }
     });
 
-    async function deletarHidratante(id, button) {
+    async function deletarHidratante(id, button) { // Manter nome da função específica
         if (!confirm('Tem certeza que deseja excluir este hidratante permanentemente?')) {
             return;
         }
 
         try {
-            const response = await fetch(`/api/hidratantes/${id}`, {
-                method: 'DELETE'
-            });
+            // MUDANÇA: Endpoint da API
+            const response = await fetch(`/api/novos-produtos/${id}`, { method: 'DELETE' });
 
             if (!response.ok) {
-                throw new Error('Erro ao excluir');
+                const errorText = await response.text();
+                throw new Error('Erro ao excluir: ' + response.status + ' - ' + errorText);
             }
 
             button.closest('tr').remove();
