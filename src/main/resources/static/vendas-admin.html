@@ -4,138 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Painel Administrativo - Vendas Pendentes</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 40px;
-      margin: 0;
-      padding-top: 80px;
-    }
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background-color: #ccc;
-      padding: 20px 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-      box-sizing: border-box;
-      z-index: 1000;
-    }
-
-    header .logo {
-      height: 50px;
-      width: auto;
-    }
-
-    header .text {
-      font-size: 28px;
-      font-weight: bold;
-      color: #333;
-      user-select: none;
-      margin: 0;
-      line-height: 1;
-    }
-
-    .header-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 40px;
-      color: #333;
-      margin-top: 40px;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: white;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: center;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-    button {
-      padding: 6px 12px;
-      width: 90px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      color: white;
-      transition: background-color 0.3s;
-      text-align: center;
-      box-sizing: border-box;
-    }
-    button.confirmar {
-      background-color: #28a745;
-      margin-right: 7px;
-    }
-    button.confirmar:hover {
-      background-color: #1e7e34;
-    }
-    button.cancelar {
-      background-color: darkorange;
-      margin-right: 7px;
-    }
-    button.cancelar:hover {
-      background-color: darkorange;
-    }
-    button.apagar {
-      background-color: #dc3545;
-      margin-right: 7px;
-    }
-    button.apagar:hover {
-      background-color: #a71d2a;
-    }
-
-    #btn-gerar-relatorio {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 40px;
-      font-size: 18px;
-      font-weight: 600;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,123,255,0.3);
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-      white-space: nowrap;
-      min-width: 220px;
-      text-align: center;
-    }
-
-    #btn-gerar-relatorio:hover {
-      background-color: #0056b3;
-      box-shadow: 0 6px 12px rgba(0,86,179,0.5);
-    }
-
-    #btn-gerar-relatorio:active {
-      background-color: #004085;
-      box-shadow: 0 3px 6px rgba(0,64,133,0.7);
-      transform: translateY(1px);
-    }
-
-
-  </style>
+  <link rel="stylesheet" href="css/paineis.css">
 </head>
 <body>
 <div class="container">
@@ -151,6 +20,7 @@
 
   <div style="text-align: center; margin-bottom: 15px;">
     <button id="btn-gerar-relatorio">Gerar Relatório PDF</button>
+    <br><br> <a href="admin.html" class="btn-voltar">Voltar para o painel administrativo</a>
   </div>
 
 
@@ -168,7 +38,6 @@
     </tr>
     </thead>
     <tbody id="vendas-tbody">
-    <!-- Vendas -->
     </tbody>
   </table>
 </div>
