@@ -243,8 +243,8 @@ function mostrarErroCarregamento(container) {
 }
 
 function configurarLogin() {
-    const adminParam = new URLSearchParams(window.location.search).get('admin');
-    if (adminParam) localStorage.setItem('admin', adminParam);
+    //const adminParam = new URLSearchParams(window.location.search).get('admin');
+    //if (adminParam) localStorage.setItem('admin', adminParam);
 
     const isAdmin = localStorage.getItem('admin') === 'true';
     if (isAdmin) {
