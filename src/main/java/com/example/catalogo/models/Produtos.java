@@ -18,20 +18,18 @@ public class Produtos {
 
     private String nome;
 
-    // Para perfumes (2 tamanhos), usa esses campos:
     private Double preco55ml;
     private Double preco100ml;
 
-    // Para hidratantes (apenas um preço fixo):
     private Double preco;
 
     private String codigo;
 
-    private String categoria; // Ex: "Feminino", "Masculino", ou "Hidratante"
+    private String categoria;
 
     private String imagemUrl;
 
     private String descricao;
 
-    private String volume; // Usado só nos hidratantes (ou pode deixar nulo)
+    private String volume;
 }

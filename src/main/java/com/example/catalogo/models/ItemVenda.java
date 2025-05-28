@@ -20,7 +20,7 @@ public class ItemVenda {
 
     @ManyToOne
     @JoinColumn(name = "produto_id")
-    private Produtos produto; // O nome da variável é 'produto' (singular)
+    private Produtos produto;
 
     private int quantidade;
 
@@ -29,17 +29,9 @@ public class ItemVenda {
     @ManyToOne
     private Venda venda;
 
-    // NOVO MÉTODO: Jackson vai chamar este setter quando encontrar "produtoId" no JSON
-    // Ele cria um objeto Produtos temporário apenas com o ID
-    @JsonProperty("produtoId") // <-- Diz ao Jackson para mapear a chave "produtoId" do JSON para este setter
+    @JsonProperty("produtoId")
     public void setProdutoId(Long id) {
-        this.produto = new Produtos(); // Cria uma nova instância de Produtos
-        this.produto.setId(id);        // Define apenas o ID recebido do JSON
+        this.produto = new Produtos();
+        this.produto.setId(id);
     }
-
-    // Você também pode querer um getter para produtoId para consistência, se precisar expor em DTOs.
-    // @JsonProperty("produtoId")
-    // public Long getProdutoId() {
-    //    return (this.produto != null) ? this.produto.getId() : null;
-    // }
 }

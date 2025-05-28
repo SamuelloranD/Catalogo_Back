@@ -3,9 +3,9 @@ package com.example.catalogo.services;
 import com.example.catalogo.dtos.ItemVendaDTO;
 import com.example.catalogo.dtos.VendaDTO;
 import com.example.catalogo.models.ItemVenda;
-import com.example.catalogo.models.Produtos; // <-- ATUALIZADO: Importa a classe Produtos (no plural)
+import com.example.catalogo.models.Produtos;
 import com.example.catalogo.models.Venda;
-import com.example.catalogo.repositories.ProdutosRepository; // <-- ATUALIZADO: Importa ProdutosRepository (no plural)
+import com.example.catalogo.repositories.ProdutosRepository;
 import com.example.catalogo.repositories.UsuarioRepository;
 import com.example.catalogo.repositories.VendaRepository;
 import jakarta.transaction.Transactional;
@@ -27,7 +27,7 @@ public class VendaService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private ProdutosRepository produtosRepository; // <-- ATUALIZADO: Injeta ProdutosRepository (no plural)
+    private ProdutosRepository produtosRepository;
 
     public Venda registrarVenda(Venda venda) {
         venda.setDataHora(LocalDateTime.now());
@@ -35,8 +35,6 @@ public class VendaService {
 
         List<ItemVenda> itensCorrigidos = new ArrayList<>();
         for (ItemVenda item : venda.getItens()) {
-            // VOLTA A USAR item.getProduto().getId()
-            // Agora item.getProduto() não será null, terá um objeto Produtos com o ID preenchido pelo Jackson
             Produtos produto = produtosRepository.findById(item.getProduto().getId())
                     .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + item.getProduto().getId()));
 

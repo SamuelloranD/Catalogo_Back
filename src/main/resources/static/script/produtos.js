@@ -2,14 +2,14 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const path = window.location.pathname;
 
-    console.log("Caminho atual:", path); // Adicione esta linha para ver o caminho no console
+    console.log("Caminho atual:", path);
 
-    // Lógica para carregar produtos com base na URL da página
+
     if (path.includes('masculino100.html')) {
         await carregarProdutosPorCategoria('masculino');
     } else if (path.includes('feminino100.html')) {
         await carregarProdutosPorCategoria('feminino');
-    } else if (path.includes('hidratantes.html')) { // <-- Adicionado para a página de hidratantes
+    } else if (path.includes('hidratantes.html')) {
         await carregarProdutosPorCategoria('hidratante');
     } else {
         // Se for a página principal (index.html), carrega todos
@@ -34,7 +34,6 @@ async function carregarProdutosPorCategoria(categoria) {
     }
 
     try {
-        // Usa o endpoint unificado com o parâmetro de categoria
         const response = await fetch(`/api/novos-produtos?categoria=${categoria}`);
         if (!response.ok) {
             const errorText = await response.text();
@@ -44,8 +43,6 @@ async function carregarProdutosPorCategoria(categoria) {
         const produtos = await response.json();
         console.log(`Produtos ${categoriaFormatada}:`, produtos);
 
-        // Renderiza os primeiros 12 produtos para páginas de categoria
-        // O `true` limpa o container antes de adicionar
         renderizarProdutos(produtos.slice(0, 12), true);
 
         // Lógica do botão "Ver Mais" para páginas de categoria
@@ -62,17 +59,17 @@ async function carregarProdutosPorCategoria(categoria) {
                     renderizarProdutos(produtos.slice(produtosMostrados, produtosMostrados + 12));
 
                     if (produtosMostrados + 12 >= produtos.length) {
-                        newBtnVerMais.style.display = 'none'; // Esconde quando todos forem carregados
+                        newBtnVerMais.style.display = 'none';
                     }
                 });
             } else {
-                btnVerMais.style.display = 'none'; // Esconde se não houver mais para mostrar
+                btnVerMais.style.display = 'none';
             }
         }
 
 
         // Ajustar o título da seção dinamicamente
-        const tituloSecao = document.querySelector('h2'); // Seleciona o primeiro h2 da página atual
+        const tituloSecao = document.querySelector('h2');
         if (tituloSecao) {
             if (categoria.toLowerCase() === 'hidratante') {
                 tituloSecao.textContent = 'Hidratantes';
@@ -110,20 +107,17 @@ async function carregarTodosProdutos() {
         const produtos = await response.json();
         console.log("Todos os produtos:", produtos);
 
-        // Renderiza os primeiros 12 produtos para a página principal
-        renderizarProdutos(produtos.slice(0, 12), true); // limpa e renderiza os primeiros 12
+        renderizarProdutos(produtos.slice(0, 12), true);
 
-        // Lógica do botão "Ver Mais" para a página principal
         if (btnVerMais) {
             if (produtos.length > 12) {
                 btnVerMais.style.display = 'block';
-                // Remove listener anterior para evitar duplicação
                 const newBtnVerMais = btnVerMais.cloneNode(true);
                 btnVerMais.parentNode.replaceChild(newBtnVerMais, btnVerMais);
 
                 newBtnVerMais.addEventListener('click', () => {
                     const produtosMostrados = document.querySelectorAll('.produto').length;
-                    renderizarProdutos(produtos.slice(produtosMostrados, produtosMostrados + 12)); // adiciona os próximos 12
+                    renderizarProdutos(produtos.slice(produtosMostrados, produtosMostrados + 12));
 
                     if (produtosMostrados + 12 >= produtos.length) {
                         newBtnVerMais.style.display = 'none';
@@ -147,11 +141,10 @@ function renderizarProdutos(produtos, limpar = false) {
     if (!container) return;
 
     if (limpar) {
-        container.innerHTML = ''; // Limpa o container antes de adicionar novos produtos, se `limpar` for `true`
+        container.innerHTML = '';
     }
 
     const htmlProdutos = produtos.map(produto => {
-        // O `imagemUrl` já deve vir do backend com o caminho completo (`/imagens/produtos-unificados/`)
         const srcImg = produto.imagemUrl || '/imagens/produtos/sem-imagem.jpg';
 
         if (produto.categoria && produto.categoria.toLowerCase() === 'hidratante') {
@@ -169,8 +162,7 @@ function renderizarProdutos(produtos, limpar = false) {
                     </button>
                 </div>
             `;
-        } else { // Perfumes ou outras categorias que usam volume selector
-            // Use preco ou preco100ml como padrão para o preço inicial
+        } else {
             const precoInicial = (produto.preco100ml !== undefined && produto.preco100ml !== null) ? produto.preco100ml : produto.preco;
             const preco55mlOption = (produto.preco55ml !== undefined && produto.preco55ml !== null) ? `<option value="${produto.preco55ml}">55ml</option>` : '';
             const preco100mlOption = (produto.preco100ml !== undefined && produto.preco100ml !== null) ? `<option value="${produto.preco100ml}" selected>100ml</option>` : '';
@@ -332,7 +324,7 @@ function configurarLogin() {
             if (isLoggedIn) {
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('admin');
-                localStorage.removeItem('carrinho'); // Limpa o carrinho ao sair
+                localStorage.removeItem('carrinho');
                 atualizarContadorCarrinho();
                 window.location.href = 'index.html';
             } else {

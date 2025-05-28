@@ -99,11 +99,11 @@ async function carregarTodosProdutos() {
         const produtos = await response.json();
         console.log("Todos os produtos:", produtos);
 
-        renderizarProdutos(produtos.slice(0, 12), true); // limpa antes de renderizar a primeira vez
+        renderizarProdutos(produtos.slice(0, 12), true);
 
         btnVerMais.addEventListener('click', () => {
             const produtosMostrados = document.querySelectorAll('.produto').length;
-            renderizarProdutos(produtos.slice(produtosMostrados, produtosMostrados + 12)); // adiciona os próximos 12
+            renderizarProdutos(produtos.slice(produtosMostrados, produtosMostrados + 12));
 
             if (produtosMostrados + 12 >= produtos.length) {
                 btnVerMais.style.display = 'none';
@@ -119,7 +119,7 @@ async function carregarTodosProdutos() {
 
 function renderizarProdutos(produtos, limpar = false) {
     const container = document.getElementById('produtos');
-    if (limpar) container.innerHTML = ''; // Limpa só se for indicado
+    if (limpar) container.innerHTML = '';
 
     const htmlProdutos = produtos.map(produto => {
         if (produto.categoria.toLowerCase() === 'hidratante') {
@@ -243,8 +243,6 @@ function mostrarErroCarregamento(container) {
 }
 
 function configurarLogin() {
-    //const adminParam = new URLSearchParams(window.location.search).get('admin');
-    //if (adminParam) localStorage.setItem('admin', adminParam);
 
     const isAdmin = localStorage.getItem('admin') === 'true';
     if (isAdmin) {

@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 @Service
 public class ProdutosService {
 
-    // Adicione a instância do logger
     private static final Logger logger = LoggerFactory.getLogger(ProdutosService.class);
 
     @Autowired

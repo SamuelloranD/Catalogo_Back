@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const itens = carrinho.map(item => ({
-            produtoId: item.id, // <-- MUDANÇA: Envie "produtoId" diretamente
+            produtoId: item.id,
             quantidade: item.quantidade,
             precoUnitario: item.preco
         }));
