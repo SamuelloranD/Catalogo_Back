@@ -1,20 +1,24 @@
 # Catálogo de Perfumes
 
-Este projeto é um catálogo de produtos desenvolvido em HTML, CSS, JavaScript e Java com Spring Boot.  
-Atualmente, estamos dando continuidade ao desenvolvimento, implementando o back-end com integração de banco de dados e funcionalidades como cadastro e login de usuários.
+Este projeto é uma plataforma de e-commerce desenvolvida para venda de cosméticos, utilizando tecnologias modernas de front-end e back-end. O sistema está completo e funcional, com integração total entre as camadas de apresentação, negócio e persistência.
 
-## Tecnologias utilizadas
+## Tecnologias Utilizadas
+
 - Java 17
 - Spring Boot
 - PostgreSQL
 - HTML, CSS e JavaScript
+- Git e GitHub
 
-## Funcionalidades
+## Funcionalidades Implementadas
+
 - Cadastro de usuários
-- Login
-- CRUD de produtos (em desenvolvimento)
+- Login com autenticação
+- CRUD completo de produtos com variações de volume e preço
+- Gerenciamento de carrinho de compras
+- Redirecionamento automatizado para WhatsApp do vendedor
+- Painel administrativo com geração de relatórios de vendas confirmadas
 
-## Em breve
-- Carrinho de compras
-- Redirecionamento para WhatsApp ou e-mail
-- Painel de administração
+## Objetivo do Projeto
+
+O objetivo é oferecer uma solução simples e eficiente para venda de perfumes e cosméticos, facilitando tanto a navegação do cliente quanto o gerenciamento por parte do administrador.
