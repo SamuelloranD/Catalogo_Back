@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (response.ok) {
                 mensagem.style.display = 'block';
-                mensagem.style.color = 'green'; // cor de sucesso
+                mensagem.style.color = 'green';
                 mensagem.textContent = responseText;
 
                 setTimeout(() => {
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 5000);
             } else {
                 mensagem.style.display = 'block';
-                mensagem.style.color = 'red'; // cor de erro
+                mensagem.style.color = 'red';
                 mensagem.textContent = responseText;
             }
         } catch (error) {

@@ -1,4 +1,3 @@
-// A função que é executada quando o DOM está pronto
 document.addEventListener('DOMContentLoaded', async () => {
     const path = window.location.pathname;
 
@@ -12,20 +11,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else if (path.includes('hidratantes.html')) {
         await carregarProdutosPorCategoria('hidratante');
     } else {
-        // Se for a página principal (index.html), carrega todos
         await carregarTodosProdutos();
     }
 
-    // Funções globais que precisam ser chamadas em todas as páginas
     configurarLogin();
     atualizarContadorCarrinho();
 });
 
 
-// Função para carregar produtos por categoria específica
 async function carregarProdutosPorCategoria(categoria) {
     const container = document.getElementById('produtos');
-    const btnVerMais = document.getElementById('ver-mais'); // Pegar a referência do botão
+    const btnVerMais = document.getElementById('ver-mais');
     const categoriaFormatada = categoria.charAt(0).toUpperCase() + categoria.slice(1);
 
     if (!container) {
@@ -45,17 +41,14 @@ async function carregarProdutosPorCategoria(categoria) {
 
         renderizarProdutos(produtos.slice(0, 12), true);
 
-        // Lógica do botão "Ver Mais" para páginas de categoria
         if (btnVerMais) {
             if (produtos.length > 12) {
                 btnVerMais.style.display = 'block';
-                // Remove listener anterior para evitar duplicação em caso de múltiplas chamadas
                 const newBtnVerMais = btnVerMais.cloneNode(true);
                 btnVerMais.parentNode.replaceChild(newBtnVerMais, btnVerMais);
 
                 newBtnVerMais.addEventListener('click', () => {
                     const produtosMostrados = document.querySelectorAll('.produto').length;
-                    // Adiciona os próximos 12 produtos
                     renderizarProdutos(produtos.slice(produtosMostrados, produtosMostrados + 12));
 
                     if (produtosMostrados + 12 >= produtos.length) {
@@ -68,7 +61,6 @@ async function carregarProdutosPorCategoria(categoria) {
         }
 
 
-        // Ajustar o título da seção dinamicamente
         const tituloSecao = document.querySelector('h2');
         if (tituloSecao) {
             if (categoria.toLowerCase() === 'hidratante') {
@@ -87,7 +79,6 @@ async function carregarProdutosPorCategoria(categoria) {
 }
 
 
-// Função para carregar todos os produtos (usada na index.html)
 async function carregarTodosProdutos() {
     const container = document.getElementById('produtos');
     const btnVerMais = document.getElementById('ver-mais');
@@ -98,7 +89,7 @@ async function carregarTodosProdutos() {
     }
 
     try {
-        const response = await fetch('/api/novos-produtos'); // Sem filtro de categoria
+        const response = await fetch('/api/novos-produtos');
         if (!response.ok) {
             const errorText = await response.text();
             throw new Error(`Erro HTTP: ${response.status} - ${errorText}`);
@@ -135,7 +126,6 @@ async function carregarTodosProdutos() {
 }
 
 
-// Função de renderização UNIFICADA para todos os tipos de produtos
 function renderizarProdutos(produtos, limpar = false) {
     const container = document.getElementById('produtos');
     if (!container) return;
@@ -191,11 +181,10 @@ function renderizarProdutos(produtos, limpar = false) {
         }
     }).join('');
 
-    container.insertAdjacentHTML('beforeend', htmlProdutos); // Adiciona ao final do container
+    container.insertAdjacentHTML('beforeend', htmlProdutos);
 }
 
 
-// Atualiza o preço exibido quando o volume do perfume é alterado
 function atualizarPreco(idPreco, valor) {
     const precoElement = document.getElementById(idPreco);
     if (precoElement) {
@@ -206,8 +195,6 @@ function atualizarPreco(idPreco, valor) {
 
 
 // --- Funções de Carrinho ---
-
-// Função de adicionar ao carrinho unificada
 function adicionarAoCarrinho(produtoId) {
     const usuarioLogado = localStorage.getItem('isLoggedIn') === 'true';
 
@@ -228,18 +215,16 @@ function adicionarAoCarrinho(produtoId) {
     let volumeOuTipo;
 
     if (categoria.toLowerCase() === 'hidratante') {
-        // Para hidratantes, o preço e volume são retirados diretamente do HTML renderizado
         precoFinal = parseFloat(produtoElement.querySelector('.preco').textContent.replace('R$ ', '').replace(',', '.'));
         volumeOuTipo = produtoElement.querySelector('.volume-info span').textContent;
-    } else { // Para perfumes
+    } else {
         const selectElement = produtoElement.querySelector('.volume-selector select');
         if (selectElement) {
             precoFinal = parseFloat(selectElement.value);
             volumeOuTipo = selectElement.options[selectElement.selectedIndex].text.replace('ml', '').trim();
         } else {
-            // Caso não tenha seletor de volume (ex: apenas um tamanho padrão de perfume)
             precoFinal = parseFloat(produtoElement.querySelector('.preco').textContent.replace('R$ ', '').replace(',', '.'));
-            volumeOuTipo = null; // Ou um valor padrão se houver
+            volumeOuTipo = null;
         }
     }
 
@@ -289,7 +274,6 @@ function atualizarContadorCarrinho() {
 }
 
 // --- Funções de Utilitários ---
-
 function mostrarErroCarregamento(container) {
     if (container) {
         container.innerHTML = `

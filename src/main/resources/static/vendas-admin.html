@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Painel Administrativo - Vendas Pendentes</title>
+  <title>Painel Administrativo - Vendas</title>
   <link rel="stylesheet" href="css/paineis.css">
 </head>
 <body>
@@ -52,7 +52,7 @@
       botao.classList.add('cancelar');
       botao.onclick = () => cancelarVenda(id, botao);
 
-      botao.closest('tr').querySelector('td:nth-child(6)').textContent = 'Confirmada';
+      botao.closest('tr').querySelector('td:nth-child(7)').textContent = 'Confirmada';
     } catch (err) {
       console.error("Erro ao confirmar venda:", err);
       alert("Erro ao confirmar venda");
@@ -69,7 +69,7 @@
       botao.classList.add('confirmar');
       botao.onclick = () => confirmarVenda(id, botao);
 
-      botao.closest('tr').querySelector('td:nth-child(6)').textContent = 'Pendente';
+      botao.closest('tr').querySelector('td:nth-child(7)').textContent = 'Pendente';
     } catch (err) {
       console.error("Erro ao cancelar venda:", err);
       alert("Erro ao cancelar venda");

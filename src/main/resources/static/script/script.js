@@ -31,9 +31,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             }
 
             window.location.href = '/index.html';
-        }
-
-        else {
+        } else {
             erroElement.textContent = data.message || 'Usuário ou senha incorretos!';
             erroElement.style.display = 'block';
             erroElement.style.animation = 'fadeIn 0.5s';
@@ -51,10 +49,14 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 document.addEventListener('DOMContentLoaded', async () => {
     const path = window.location.pathname;
 
+    console.log("Caminho atual:", path);
+
     if (path.includes('masculino100.html')) {
         await carregarProdutosPorCategoria('masculino');
     } else if (path.includes('feminino100.html')) {
         await carregarProdutosPorCategoria('feminino');
+    } else if (path.includes('hidratantes.html')) {
+        await carregarProdutosPorCategoria('hidratante');
     } else {
         await carregarTodosProdutos();
     }
@@ -65,20 +67,54 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function carregarProdutosPorCategoria(categoria) {
     const container = document.getElementById('produtos');
+    const btnVerMais = document.getElementById('ver-mais');
     const categoriaFormatada = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+
+    if (!container) {
+        console.error("Elemento com ID 'produtos' não encontrado. Verifique seu HTML.");
+        return;
+    }
 
     try {
         const response = await fetch(`/api/novos-produtos?categoria=${categoria}`);
-        if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new new Error(`Erro HTTP: ${response.status} - ${errorText}`);
+        }
 
         const produtos = await response.json();
         console.log(`Produtos ${categoriaFormatada}:`, produtos);
 
-        renderizarProdutos(produtos);
+        renderizarProdutos(produtos.slice(0, 12), true);
 
-        const tituloSecao = document.querySelector('#masculinos h2, #femininos h2');
+        if (btnVerMais) {
+            if (produtos.length > 12) {
+                btnVerMais.style.display = 'block';
+                const newBtnVerMais = btnVerMais.cloneNode(true);
+                btnVerMais.parentNode.replaceChild(newBtnVerMais, btnVerMais);
+
+                newBtnVerMais.addEventListener('click', () => {
+                    const produtosMostrados = document.querySelectorAll('.produto').length;
+                    renderizarProdutos(produtos.slice(produtosMostrados, produtosMostrados + 12));
+
+                    if (produtosMostrados + 12 >= produtos.length) {
+                        newBtnVerMais.style.display = 'none';
+                    }
+                });
+            } else {
+                btnVerMais.style.display = 'none';
+            }
+        }
+
+        const tituloSecao = document.querySelector('h2');
         if (tituloSecao) {
-            tituloSecao.textContent = `Perfumes ${categoriaFormatada}s`;
+            if (categoria.toLowerCase() === 'hidratante') {
+                tituloSecao.textContent = 'Hidratantes';
+            } else if (categoria.toLowerCase() === 'masculino') {
+                tituloSecao.textContent = 'Perfumes Masculinos';
+            } else if (categoria.toLowerCase() === 'feminino') {
+                tituloSecao.textContent = 'Perfumes Femininos';
+            }
         }
 
     } catch (error) {
@@ -87,29 +123,45 @@ async function carregarProdutosPorCategoria(categoria) {
     }
 }
 
-
 async function carregarTodosProdutos() {
     const container = document.getElementById('produtos');
     const btnVerMais = document.getElementById('ver-mais');
 
+    if (!container) {
+        console.error("Elemento com ID 'produtos' não encontrado. Verifique seu HTML.");
+        return;
+    }
+
     try {
         const response = await fetch('/api/novos-produtos');
-        if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Erro HTTP: ${response.status} - ${errorText}`);
+        }
 
         const produtos = await response.json();
         console.log("Todos os produtos:", produtos);
 
         renderizarProdutos(produtos.slice(0, 12), true);
 
-        btnVerMais.addEventListener('click', () => {
-            const produtosMostrados = document.querySelectorAll('.produto').length;
-            renderizarProdutos(produtos.slice(produtosMostrados, produtosMostrados + 12));
+        if (btnVerMais) {
+            if (produtos.length > 12) {
+                btnVerMais.style.display = 'block';
+                const newBtnVerMais = btnVerMais.cloneNode(true);
+                btnVerMais.parentNode.replaceChild(newBtnVerMais, btnVerMais);
 
-            if (produtosMostrados + 12 >= produtos.length) {
+                newBtnVerMais.addEventListener('click', () => {
+                    const produtosMostrados = document.querySelectorAll('.produto').length;
+                    renderizarProdutos(produtos.slice(produtosMostrados, produtosMostrados + 12));
+
+                    if (produtosMostrados + 12 >= produtos.length) {
+                        newBtnVerMais.style.display = 'none';
+                    }
+                });
+            } else {
                 btnVerMais.style.display = 'none';
             }
-        });
-
+        }
 
     } catch (error) {
         console.error("Erro ao carregar produtos:", error);
@@ -119,39 +171,52 @@ async function carregarTodosProdutos() {
 
 function renderizarProdutos(produtos, limpar = false) {
     const container = document.getElementById('produtos');
-    if (limpar) container.innerHTML = '';
+    if (!container) return;
+
+    if (limpar) {
+        container.innerHTML = '';
+    }
 
     const htmlProdutos = produtos.map(produto => {
-        if (produto.categoria.toLowerCase() === 'hidratante') {
+        const srcImg = produto.imagemUrl || '/imagens/produtos/sem-imagem.jpg';
+
+        if (produto.categoria && produto.categoria.toLowerCase() === 'hidratante') {
             return `
                 <div class="produto" data-id="${produto.id}" data-categoria="${produto.categoria}">
-                    <img src="${produto.imagemUrl || 'imagens/sem-imagem.jpg'}" alt="${produto.nome}">
+                    <img src="${srcImg}" alt="${produto.nome}">
                     <h3>${produto.nome}</h3>
                     <p class="descricao">${produto.descricao || ''}</p>
+                    <div class="volume-info">
+                        <span>${produto.volume || '60g'}</span>
+                    </div>
                     <p class="preco">R$ ${produto.preco.toFixed(2).replace('.', ',')}</p>
-                    <button class="add-to-cart" onclick="adicionarAoCarrinho(${produto.id}, null, ${produto.preco})">
+                    <button class="add-to-cart" onclick="adicionarAoCarrinho(${produto.id})">
                         Adicionar ao Carrinho
                     </button>
                 </div>
             `;
         } else {
+            const precoInicial = (produto.preco100ml !== undefined && produto.preco100ml !== null) ? produto.preco100ml : produto.preco;
+            const preco55mlOption = (produto.preco55ml !== undefined && produto.preco55ml !== null) ? `<option value="${produto.preco55ml}">55ml</option>` : '';
+            const preco100mlOption = (produto.preco100ml !== undefined && produto.preco100ml !== null) ? `<option value="${produto.preco100ml}" selected>100ml</option>` : '';
+
             return `
                 <div class="produto" data-id="${produto.id}" data-categoria="${produto.categoria}">
-                    <img src="${produto.imagemUrl || 'imagens/sem-imagem.jpg'}" alt="${produto.nome}">
+                    <img src="${srcImg}" alt="${produto.nome}">
                     <h3>${produto.nome}</h3>
                     <p class="descricao">${produto.descricao || ''}</p>
 
                     <div class="volume-selector">
                         <label>Volume:</label>
                         <select onchange="atualizarPreco('preco-${produto.id}', this.value)">
-                            <option value="${produto.preco55ml}">55ml</option>
-                            <option value="${produto.preco100ml}" selected>100ml</option>
+                            ${preco55mlOption}
+                            ${preco100mlOption}
                         </select>
                     </div>
 
-                    <p class="preco" id="preco-${produto.id}">R$ ${produto.preco100ml.toFixed(2).replace('.', ',')}</p>
+                    <p class="preco" id="preco-${produto.id}">R$ ${precoInicial.toFixed(2).replace('.', ',')}</p>
 
-                    <button class="add-to-cart" onclick="adicionarAoCarrinho(${produto.id}, this.previousElementSibling.querySelector('select').value, null)">
+                    <button class="add-to-cart" onclick="adicionarAoCarrinho(${produto.id})">
                         Adicionar ao Carrinho
                     </button>
                 </div>
@@ -162,8 +227,6 @@ function renderizarProdutos(produtos, limpar = false) {
     container.insertAdjacentHTML('beforeend', htmlProdutos);
 }
 
-
-
 function atualizarPreco(idPreco, valor) {
     const precoElement = document.getElementById(idPreco);
     if (precoElement) {
@@ -172,7 +235,7 @@ function atualizarPreco(idPreco, valor) {
     }
 }
 
-function adicionarAoCarrinho(produtoId, precoSelecionado, precoFixo) {
+function adicionarAoCarrinho(produtoId) {
     const usuarioLogado = localStorage.getItem('isLoggedIn') === 'true';
 
     if (!usuarioLogado) {
@@ -182,20 +245,37 @@ function adicionarAoCarrinho(produtoId, precoSelecionado, precoFixo) {
     }
 
     const produtoElement = document.querySelector(`.produto[data-id="${produtoId}"]`);
-    const volumeSelecionado = precoSelecionado ?
-        produtoElement.querySelector('select').options[produtoElement.querySelector('select').selectedIndex].text :
-        (produtoElement.dataset.categoria.toLowerCase() === 'hidratante' ? produtoElement.querySelector('.preco').textContent : null);
+    if (!produtoElement) {
+        console.error("Elemento do produto não encontrado para o ID:", produtoId);
+        return;
+    }
 
-    const preco = precoSelecionado ? parseFloat(precoSelecionado) : precoFixo;
+    const categoria = produtoElement.dataset.categoria;
+    let precoFinal;
+    let volumeOuTipo;
+
+    if (categoria.toLowerCase() === 'hidratante') {
+        precoFinal = parseFloat(produtoElement.querySelector('.preco').textContent.replace('R$ ', '').replace(',', '.'));
+        volumeOuTipo = produtoElement.querySelector('.volume-info span').textContent;
+    } else {
+        const selectElement = produtoElement.querySelector('.volume-selector select');
+        if (selectElement) {
+            precoFinal = parseFloat(selectElement.value);
+            volumeOuTipo = selectElement.options[selectElement.selectedIndex].text.replace('ml', '').trim();
+        } else {
+            precoFinal = parseFloat(produtoElement.querySelector('.preco').textContent.replace('R$ ', '').replace(',', '.'));
+            volumeOuTipo = null;
+        }
+    }
 
     const produto = {
         id: produtoId,
         nome: produtoElement.querySelector('h3').textContent,
-        preco: preco,
+        preco: precoFinal,
         quantidade: 1,
-        volume: volumeSelecionado ? volumeSelecionado.replace('ml', '').trim() : null,
+        volume: volumeOuTipo,
         imagem: produtoElement.querySelector('img').src,
-        categoria: produtoElement.dataset.categoria
+        categoria: categoria
     };
 
     let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
@@ -213,12 +293,13 @@ function adicionarAoCarrinho(produtoId, precoSelecionado, precoFixo) {
     atualizarContadorCarrinho();
 
     const btn = produtoElement.querySelector('.add-to-cart');
-    btn.textContent = '✔ Adicionado';
-    setTimeout(() => {
-        btn.textContent = 'Adicionar ao Carrinho';
-    }, 2000);
+    if (btn) {
+        btn.textContent = '✔ Adicionado';
+        setTimeout(() => {
+            btn.textContent = 'Adicionar ao Carrinho';
+        }, 2000);
+    }
 }
-
 
 function atualizarContadorCarrinho() {
     const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
@@ -243,6 +324,8 @@ function mostrarErroCarregamento(container) {
 }
 
 function configurarLogin() {
+    const adminParam = new URLSearchParams(window.location.search).get('admin');
+    if (adminParam) localStorage.setItem('admin', adminParam);
 
     const isAdmin = localStorage.getItem('admin') === 'true';
     if (isAdmin) {
@@ -264,7 +347,7 @@ function configurarLogin() {
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('admin');
                 localStorage.removeItem('carrinho');
-                atualizarContadorCarrinho()
+                atualizarContadorCarrinho();
                 window.location.href = 'index.html';
             } else {
                 window.location.href = 'login.html';

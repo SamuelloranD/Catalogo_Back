@@ -3,15 +3,15 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
     margin: 0;
-    padding: 20px; /* Padding padrão para a maioria das páginas */
-    padding-top: 80px; /* Ajuste para o cabeçalho fixo, se aplicável */
+    padding: 20px;
+    padding-top: 80px;
 }
 
 h1 {
     text-align: center;
     color: #333;
-    margin-bottom: 40px; /* Adiciona margem inferior para consistência */
-    margin-top: 40px; /* Adiciona margem superior para consistência */
+    margin-bottom: 40px;
+    margin-top: 40px;
 }
 
 .container {
@@ -76,8 +76,8 @@ button {
     justify-content: center;
     padding: 12px 40px;
     font-size: 18px;
-    font-weight: 600; /* Isso deixa o texto em negrito */
-    background-color: #007bff; /* Cor azul primária */
+    font-weight: 600;
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
@@ -85,9 +85,9 @@ button {
     box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     white-space: nowrap;
-    min-width: 220px; /* Garante uma largura mínima consistente */
+    min-width: 220px;
     text-align: center;
-    text-decoration: none; /* Remove sublinhado para tags 'a' se usarem esta classe */
+    text-decoration: none;
 }
 
 .btn-acao-principal:hover,
@@ -161,7 +161,7 @@ button.cancelar {
     width: 90px;
 }
 button.cancelar:hover {
-    background-color: #e08e0b; /* Laranja um pouco mais escuro para hover */
+    background-color: #e08e0b;
 }
 button.apagar {
     background-color: #dc3545;
@@ -256,7 +256,7 @@ button.apagar:hover {
     padding: 12px 40px;
     font-size: 18px;
     font-weight: 600;
-    background-color: #6c757d; /* Uma cor cinza */
+    background-color: #6c757d;
     color: white;
     border: none;
     border-radius: 4px;
@@ -265,7 +265,7 @@ button.apagar:hover {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     white-space: nowrap;
     min-width: 220px;
-    text-decoration: none; /* Remove sublinhado para links */
+    text-decoration: none;
     text-align: center;
 }
 
@@ -409,7 +409,7 @@ button.apagar:hover {
     padding: 12px 40px;
     font-size: 18px;
     font-weight: 600;
-    background-color: #6c757d; /* A gray color, adjust as needed */
+    background-color: #6c757d;
     color: white;
     border: none;
     border-radius: 4px;
@@ -418,7 +418,7 @@ button.apagar:hover {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     white-space: nowrap;
     min-width: 220px;
-    text-decoration: none; /* Remove underline for links */
+    text-decoration: none;
     text-align: center;
 }
 
@@ -434,9 +434,9 @@ button.apagar:hover {
 }
 
 .btn {
-    background-color: #007bff; /* Azul padrão */
+    background-color: #007bff;
     color: white;
-    padding: 10px 20px; /* Um padding maior para botões principais */
+    padding: 10px 20px;
     text-decoration: none;
     border-radius: 5px;
 }
